@@ -1,0 +1,16 @@
+{
+  "name": "gyroscope",
+  "version": "0.0.1",
+  "description": "Get gyroscope",
+  "cordova": {
+    "id": "byakugan-plugin-gyroscope",
+    "platforms": ["android", "ios"]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "gyroscope"
+  ],
+  "author": "",
+  "license": "ISC"
+}
