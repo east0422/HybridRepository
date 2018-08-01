@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="byakugan-plugin-autobrightness" version="0.0.1">
+  <name>AutoBrightness</name>
+  <description>Set brightness and reset when switch to background</description>
+  <js-module src="www/autobrightness.js" name="AutoBrightness">
+    <clobbers target="AutoBrightness" />
+  </js-module>
+
+  <platform name="android">
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="AutoBrightness">
+        <param name="android-package" value="com.luminagic.byakugan.autobrightness.AutoBrightness" />
+      </feature>
+    </config-file>
+    <source-file src="android/AutoBrightness.kt" target-dir="app/src/main/java/com/luminagic/byakugan/autobrightness" />
+    <hook type="after_plugin_install" src="scripts/applyKotlinAndroidPlugin.js" />
+  </platform>
+  <platform name="ios">
+    <dependency id="cordova-plugin-add-swift-support" version="1.7.1"/>
+    <config-file target="config.xml" parent="/*">
+      <feature name="AutoBrightness">
+        <param name="ios-package" value="AutoBrightness" />
+      </feature>
+    </config-file>
+    <source-file src="ios/AutoBrightness.swift" />
+  </platform>
+</plugin>

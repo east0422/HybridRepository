@@ -1,0 +1,19 @@
+{
+  "name": "autobrightness",
+  "version": "0.0.1",
+  "description": "Set brightness and reset when switch to background",
+  "cordova": {
+    "id": "byakugan-plugin-autobrightness",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "author": "",
+  "license": "ISC"
+}
