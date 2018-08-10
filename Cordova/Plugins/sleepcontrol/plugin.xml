@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="byakugan-plugin-sleepcontrol" version="0.0.1">
+  <name>SleepControl</name>
+  <description>Set screen can sleep or not</description>
+  <js-module src="www/sleepcontrol.js" name="SleepControl">
+    <clobbers target="SleepControl" />
+  </js-module>
+
+  <platform name="android">
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="SleepControl">
+        <param name="android-package" value="com.luminagic.byakugan.sleepcontrol.SleepControl" />
+      </feature>
+    </config-file>
+    <source-file src="android/SleepControl.kt" target-dir="app/src/main/java/com/luminagic/byakugan/sleepcontrol" />
+    <hook type="after_plugin_install" src="scripts/applyKotlinAndroidPlugin.js" />
+  </platform>
+  <platform name="ios">
+    <dependency id="cordova-plugin-add-swift-support" version="1.7.1"/>
+    <config-file target="config.xml" parent="/*">
+      <feature name="SleepControl">
+        <param name="ios-package" value="SleepControl" />
+      </feature>
+    </config-file>
+    <source-file src="ios/SleepControl.swift" />
+  </platform>
+</plugin>

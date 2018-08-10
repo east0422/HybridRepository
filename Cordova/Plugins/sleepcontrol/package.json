@@ -1,0 +1,19 @@
+{
+  "name": "sleepcontrol",
+  "version": "0.0.1",
+  "description": "Set the screen can sleep or not",
+  "cordova": {
+    "id": "byakugan-plugin-sleepcontrol",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "author": "",
+  "license": "ISC"
+}
