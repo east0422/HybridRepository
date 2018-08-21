@@ -3,6 +3,8 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const srcRoot = path.resolve(__dirname, '../src/')
+const testRoot = path.resolve(__dirname, '../test/')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -22,7 +24,7 @@ const createLintingRule = () => ({
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/main.js'
+    index: path.resolve(__dirname, '../src/main.js')
   },
   output: {
     path: config.build.assetsRoot,
@@ -42,6 +44,16 @@ module.exports = {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
+        test: /\.(js|vue)$/,
+        enforce: 'pre',
+        loader: 'eslint-loader',
+        include: [srcRoot, testRoot],
+        exclude: /node_modules/,
+        options: {
+          formatter: require('eslint-friendly-formatter')
+        }
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueLoaderConfig
@@ -49,14 +61,19 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+        include: [srcRoot, testRoot],
+        exclude: /node_modules/
+      },
+      {
+        test: /\.html$/,
+        loader: 'vue-html-loader'
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath('[name].[hash:7].[ext]')
         }
       },
       {
@@ -64,7 +81,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('media/[name].[hash:7].[ext]')
+          name: utils.assetsPath('[name].[hash:7].[ext]')
         }
       },
       {
