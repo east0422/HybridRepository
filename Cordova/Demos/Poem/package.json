@@ -16,7 +16,7 @@
   "dependencies": {
     "csshake": "^1.5.3",
     "vue": "^2.5.2",
-    "vue-smooth-dnd": "^0.2.5"
+    "vuedraggable": "^2.16.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

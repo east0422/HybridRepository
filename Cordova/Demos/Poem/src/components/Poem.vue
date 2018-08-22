@@ -1,29 +1,43 @@
 <template>
   <div>
-    <div class="poem-display" :style="bg_image_class">
+    <div class="fill vcontainer poem-display" :style="poembgstyle">
       <span class="poem-title">{{msg}}</span>
-      <Container @drop="handleDrop" :orientation="'horizontal'" :drag-begin-delay='0'>
-        <Draggable style="padding: 10px 30px">
-          <div :class="start_class">{{draggable}}</div>
-        </Draggable>
-        <Draggable style="padding: 10px"
-          v-for="(word, index) in poems[which_poem][which_sentence]"
+      <draggable class="fill hcontainer poem-words"
+        :move="onMove"
+        :list="words">
+        <div style="padding: 10px 30px">
+          <div :class="['drag', start_class]">{{dragword}}</div>
+        </div>
+        <div style="padding: 10px"
+          v-for="(word, index) in words"
           :key="index">
           <div :class="target_class">
-            <span v-if="index === target_index">{{poem_target}}</span>
-            <span v-if="index !== target_index">{{word}}</span>
+            <span v-if="index === targetindex">{{targetword}}</span>
+            <span v-if="index !== targetindex">{{word}}</span>
           </div>
-        </Draggable>
-      </Container>
-      <div :class="bg_class"></div>
+        </div>
+      </draggable>
+      <div class="fullscreenMask" v-show="showFullscreenMask"></div>
+      <audio :src="poemAudioSrc" preload="auto" ref="poem" loop="loop"></audio>
     </div>
   </div>
 </template>
 
 <style>
+  .fill {
+    flex: 1;
+  }
+  .vcontainer {
+    display: flex;
+    flex-direction: column;
+  }
+  .hcontainer {
+    display: flex;
+    flex-direction: row;
+  }
   .poem-display {
-    height: 100%;
     width: 100%;
+    height: 100%;
     text-align: center;
   }
   .poem-title {
@@ -31,6 +45,10 @@
     font-weight: bold;
     color: blue;
     padding: 30px 0;
+  }
+  .poem-words {
+    align-self: center;
+    justify-content: center;
   }
   .drag,
   .drop {
@@ -85,82 +103,136 @@
 </style>
 
 <script>
-  import {Container, Draggable} from 'vue-smooth-dnd'
+  import draggable from 'vuedraggable'
   import 'csshake'
 
   export default {
     data () {
       return {
         msg: '欢迎来到拼古诗游戏',
-        poem_target: '?',
-        start_class: 'drag',
+        targetword: '?',
+        start_class: '',
         target_class: 'drop',
-        bg_class: '',
-        poems: [['白日依山尽', '黄河入海流', '欲穷千里目', '更上一层楼'],
-          ['空山不见人', '但闻人语响', '返景入深林', '复照青苔上']],
-        which_poem: 0,
-        which_sentence: 0,
+        showFullscreenMask: false,
+        poems: [
+          [
+            ['白', '日', '依', '山', '尽'],
+            ['黄', '河', '入', '海', '流'],
+            ['欲', '穷', '千', '里', '目'],
+            ['更', '上', '一', '层', '楼'],
+          ], [
+            ['空', '山', '不', '见', '人'],
+            ['但', '闻', '人', '语', '响'],
+            ['返', '景', '入', '深', '林'],
+            ['复', '照', '青', '苔', '上'],
+          ],
+        ],
+        poemIndex: 0,
+        sentenceIndex: 0,
+        timeoutStart: false,
+        poemAudioSrc: require('@/audio/poem1.m4a'),
       }
     },
     components: {
-      Container,
-      Draggable,
+      draggable,
     },
     computed: {
-      bg_image_class () {
+      poembgstyle () {
         return {
-          backgroundImage: 'url(' + require('@/image/poem_bg' + this.which_poem + '.png') + ')',
+          backgroundImage: 'url(' + require('@/image/poem_bg' + this.poemIndex + '.png') + ')',
         }
       },
-      sentence_per_peom () {
-        return this.poems[this.which_poem].length
+      words () {
+        return this.poems[this.poemIndex][this.sentenceIndex]
       },
-      poem_sentence_len () {
-        if (this.which_sentence <= this.sentence_per_peom) {
-          return this.poems[this.which_poem][this.which_sentence].length
-        } else {
+      targetindex () {
+        if (this.sentenceIndex <= this.poems[this.poemIndex].length) {
+          return Math.floor(Math.random() * this.words.length)
           return 0
         }
       },
-      target_index () {
-        return Math.floor(Math.random() * this.poem_sentence_len)
-      },
-      draggable () {
-        if (this.which_sentence <= this.sentence_per_peom) {
-          return this.poems[this.which_poem][this.which_sentence][this.target_index]
+      dragword () {
+        if (this.sentenceIndex <= this.poems[this.poemIndex].length) {
+          return this.words[this.targetindex]
         } else {
           return null
         }
       },
     },
     methods: {
-      handleDrop (index) {
-        if (index.addedIndex - 1 === this.target_index || index.addedIndex === this.target_index) {
-          this.poem_target = this.draggable
+      onMove ({relatedContext, draggedContext}) {
+        if (draggedContext.index !== 0 || this.timeoutStart) {
+          return false // cancel move
+        }
+
+        if (relatedContext.index - 2 === this.targetindex) {
+          this.targetword = this.dragword
           this.target_class = 'drop_finish shake-slow shake-constant'
-          this.start_class = 'drag drag_finish'
+          this.start_class = 'drag_finish'
           var that = this
+          this.timeoutStart = true
           setTimeout(() => {
             that.target_class = 'drop_finish'
-            that.bg_class = 'fullscreenMask'
+            that.showFullscreenMask = true
           }, 1000)
+
           setTimeout(() => {
-            that.bg_class = ''
-            if (that.which_sentence < that.sentence_per_peom - 1) {
-              that.which_sentence += 1
+            that.showFullscreenMask = false
+            if (that.sentenceIndex < that.poems[that.poemIndex].length - 1) {
+              that.sentenceIndex += 1
             } else {
               // 一首诗结束
-              if (that.which_poem < that.poems.length - 1) {
-                that.which_poem += 1
-                that.which_sentence = 0
+              if (that.poemIndex < that.poems.length - 1) {
+                that.poemIndex += 1
+                that.sentenceIndex = 0
+                that.$refs.poem.src = require('@/audio/poem' + (that.poemIndex + 1) + '.m4a')
+                that.playPoemAudio()
+              } else {
+                // 诗词训练完成
+                that.$refs.poem.pause()
               }
             }
-            that.poem_target = '?'
+            that.targetword = '?'
             that.target_class = 'drop'
-            that.start_class = 'drag'
+            that.start_class = ''
+            that.timeoutStart = false
           }, 4000)
         }
+        return false
+      },
+      async playPoemAudio () {
+        try {
+          this.$refs.poem.load()
+          await this.$refs.poem.play()
+        } catch (error) {
+          console.log('play audio error:' + error)
+          // some browser requires the user explicitly start media play,eg: Safari
+          let handler = () => {
+            document.removeEventListener('touchstart', handler)
+            this.$refs.poem.play()
+          }
+          document.addEventListener('touchstart', handler)
+        }
+      },
+      reset () {
+        this.targetword = '?'
+        this.start_class = ''
+        this.target_class = 'drop'
+        this.showFullscreenMask = false
+        this.poemIndex = 0
+        this.sentenceIndex = 0
+        this.timeoutStart = false
       },
     },
+    mounted () {
+      document.addEventListener('deviceready', () => {
+        window.screen.orientation.lock('landscape')
+        this.reset()
+        this.playPoemAudio()
+      })
+    },
+    beforeDestroy () {
+      this.$refs.poem.pause()
+    }
   }
 </script>
