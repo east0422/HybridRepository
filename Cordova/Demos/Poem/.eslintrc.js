@@ -17,13 +17,28 @@ module.exports = {
   ],
   // required to lint *.vue files
   plugins: [
-    'vue'
+    'html'
   ],
   // add your custom rules here
   rules: {
     // allow async-await
     'generator-star-spacing': 'off',
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+
+    'arrow-parens': 0,
+    'comma-dangle': [2, 'always-multiline'],
+    'indent': 'off',
+    'vue/script-indent': ['error', 2, {
+      'baseIndent': 1,
+      'switchCase': 0,
+      'ignores': []
+    }],
+    'vue/html-indent': ['error', 2, {
+      'attribute': 1,
+      'closeBracket': 0,
+      'ignores': [],
+      'alignAttributesVertically': true
+    }]
   }
 }
