@@ -13,11 +13,11 @@
         </video>
       </div>
       <div class="vcontainer socket-master-btn-container">
-        <button
+        <div
           class="socket-master-btn"
           :style="{backgroundImage: 'url(' + (playindex !== index ? playSrc : pauseSrc) + ')'}"
           @click.prevent="videoClicked(index)">
-        </button>
+        </div>
       </div>
     </div>
   </div>
@@ -54,7 +54,7 @@
     background-size: contain;
     height: 80px;
     width: 80px;
-    border: 1px solid transparent;
+    border: 0px;
   }
 </style>
 

@@ -118,7 +118,7 @@
                 }
 
                 // allowed to play() without a user gesture if their source media contains no audio tracks, or if their muted property is set to true or not visible on-screen or out of the viewport
-                that.$refs.video.muted = true
+                that.$refs.video.muted = false
                 setTimeout(() => {
                   that.$refs.video.play().catch((error) => {
                     console.log('slave play video error:' + error)
