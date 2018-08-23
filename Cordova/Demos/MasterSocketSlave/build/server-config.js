@@ -6,31 +6,15 @@ app.get('/', function(req,res){
   res.send('启动成功：');
 });
 
+const socketRandom = 'f174b966fxx29y'
+
 io.on('connection', function(socket){ 
   console.log('new client connected');
-  // slave -> master
-  socket.on('ready', function (data) {
-    console.log('ready:' + JSON.stringify(data));
-    socket.broadcast.emit('ready', {id: data.id});
-  });
-  
-  // master -> slave
-  socket.on('play', function (data) {
-    console.log('play')
-    socket.broadcast.emit('play', {videoindex: data.videoindex});
-  });
-  socket.on('pause', function () {
-    console.log('pause')
-    socket.broadcast.emit('pause');
-  });
-  socket.on('volumechanged', function (data) {
-    console.log('volumechanged')
-    socket.broadcast.emit('volumechanged', {volume: data.volume});
-  });
-  socket.on('ontimeupdate', function (data) {
-    console.log('ontimeupdate')
-    socket.broadcast.emit('ontimeupdate', {currentTime: data.currentTime});
-  });
+
+  // master <-> slave
+  socket.on('my_event_' + socketRandom, function (data) {
+    socket.broadcast.emit('my_response_' + socketRandom, data);
+  })
 });
 console.log('io listen success !! ');
 

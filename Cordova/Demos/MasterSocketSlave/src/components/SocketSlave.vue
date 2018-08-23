@@ -6,7 +6,7 @@
         :style="videoStyle"
         playsinline
         loop="loop"
-        preload="auto"
+        preload="load"
         ref="video">
       </video>
       <button
@@ -19,6 +19,11 @@
       <span>{{touchesmsg}}</span>
       <span>{{targetmsg}}</span>
       <span>{{changedmsg}}</span>
+      <button
+        class="socketslave-ready"
+        @click.prevent="readyClicked">
+        ready
+      </button>
     </div>
   </div>
 </template>
@@ -29,7 +34,13 @@
   }
   .socketslave-reset {
     position: absolute;
-    left: 50%;
+    left: 30%;
+    height: 50px;
+    width: 80px;
+  }
+  .socketslave-ready {
+    position: absolute;
+    right: 30%;
     height: 50px;
     width: 80px;
   }
@@ -37,12 +48,16 @@
 
 <script type="text/babel">
   import io from 'socket.io-client'
-  let socket = io.connect('http://localhost:3000')
+  const socket = io.connect('http://localhost:3000')
+  const socketRandom = 'f174b966fxx29y'
+  const roomid = '1#2R4_'
+  const role = 'slave'
+  const pageid = Math.floor((Math.random() * 10000) + 1)
 
   export default {
     data () {
       return {
-        showvideo: true,
+        showvideo: false,
         width: 0,
         height: 0,
         marginLeft: 0,
@@ -68,33 +83,60 @@
       },
     },
     methods: {
+      sendReady () {
+        this.showvideo = true
+        socket.emit('my_event_' + socketRandom, {
+          roomid: roomid,
+          pageid: pageid,
+          role: role,
+          userid: '',
+          message: 'ready',
+          message_to_userid: '',
+          params: {
+            id: 'mockid',
+          },
+        })
+      },
       connectSocket () {
-        socket.emit('ready', {id: 'mockid'})
         var that = this
-        socket.on('play', function (data) {
-          console.log('slave play')
-          if (data.videoindex && data.videoindex >= 0) {
-            if (data.videoindex < that.videos.length) {
-              that.videoindex = data.videoindex
-            } else {
-              that.videoindex = 0
+        socket.on('connect', function () {
+          console.log('slave connect socket server')
+        })
+
+        socket.on('my_response_' + socketRandom, function (data) {
+          console.log('slave receive data: ' + JSON.stringify(data))
+          if (data.role && data.role.startsWith('master')) { // master 发送过来的消息
+            switch (data.message) {
+              case 'play': {
+                if (data.params && data.params.videoindex !== that.videoindex) {
+                  if (data.params.videoindex < that.videos.length) {
+                    that.videoindex = data.params.videoindex
+                  } else {
+                    that.videoindex = 0
+                  }
+                  that.$refs.video.load()
+                }
+
+                // allowed to play() without a user gesture if their source media contains no audio tracks, or if their muted property is set to true or not visible on-screen or out of the viewport
+                that.$refs.video.muted = true
+                setTimeout(() => {
+                  that.$refs.video.play().catch((error) => {
+                    console.log('slave play video error:' + error)
+                  })
+                }, 0)
+                break
+              }
+              case 'pause': {
+                that.$refs.video.pause()
+                break
+              }
+              default: {
+
+              }
             }
-            that.$refs.video.load()
           }
-          that.$refs.video.play()
         })
-        socket.on('pause', function () {
-          console.log('slave pause')
-          that.$refs.video.pause()
-        })
-        socket.on('volumechanged', function (data) {
-          console.log('slave volumechanged')
-          that.$refs.video.volume = data.volume
-        })
-        socket.on('ontimeupdate', function (data) {
-          console.log('slave ontimeupdate')
-          that.$refs.video.currentTime = data.currentTime
-        })
+
         socket.on('disconnect', function () {
           console.log('slave disconnect socket server')
         })
@@ -117,8 +159,6 @@
         this.height = (centerY - y) * 2
         this.marginLeft = x
         this.marginTop = y
-        this.showvideo = true
-        console.log('four touch x:' + x + ',y:' + y + ',height:' + this.height + ',width:' + this.width)
         return true
       },
       isAppropriateThreePoint (touches) {
@@ -139,15 +179,28 @@
         let height = Math.min(distance12, distance13, distance23)
         let width = distance12 + distance13 + distance23 - max - height
 
-        console.log('three touch x:' + x + ',y:' + y + ',height:' + height + ',width:' + width)
+        if (max === distance12) {
+          x = (x1 + x2 - width) / 2
+          y = (y1 + y2 - height) / 2
+        } else if (max === distance13) {
+          x = (x1 + x3 - width) / 2
+          y = (y1 + y3 - height) / 2
+        } else {
+          x = (x2 + x3 - width) / 2
+          y = (y2 + y3 - height) / 2
+        }
+
         this.width = width
         this.height = height
         this.marginLeft = x
         this.marginTop = y
-        this.showvideo = true
         return true
       },
       anchorTouchStarted (event) {
+        if (this.showvideo) { // 设备已经安装上不再检测touch，避免后续误触发
+          return
+        }
+
         this.touchesmsg = 'touches-- '
         for (let touch of event.touches) {
           this.touchesmsg += '(x:' + touch.pageX + ',y:' + touch.pageY + ')'
@@ -163,12 +216,20 @@
 
         if (event.touches.length === 3) {
           if (this.isAppropriateThreePoint(event.touches)) {
-
+            this.sendReady()
           }
         } else if (event.touches.length === 4) {
           if (this.isAppropriateFourPoint(event.touches)) {
+            this.sendReady()
           }
         }
+      },
+      readyClicked () {
+        this.width = 500
+        this.height = 300
+        this.marginLeft = 100
+        this.marginTop = 80
+        this.sendReady()
       },
       setFullscreen () {
         if (window.device.platform === 'Android') {
@@ -185,7 +246,7 @@
         }
       },
       reset () {
-        this.showvideo = true
+        this.showvideo = false
         this.width = 0
         this.height = 0
         this.marginLeft = 0
@@ -194,14 +255,20 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        vm.setFullscreen()
         vm.reset()
-        window.screen.orientation.lock('landscape')
+        document.addEventListener('deviceready', () => {
+          vm.setFullscreen()
+          if (window.device.platform === 'Android' || window.device.platform === 'iOS') {
+            window.screen.orientation.lock('landscape')
+          }
+        })
         vm.connectSocket()
       })
     },
     beforeRouteLeave (to, from, next) {
-      window.screen.orientation.lock('portrait')
+      if (window.device.platform === 'Android' || window.device.platform === 'iOS') {
+        window.screen.orientation.lock('portrait')
+      }
       this.exitFullscreen()
       next()
     },

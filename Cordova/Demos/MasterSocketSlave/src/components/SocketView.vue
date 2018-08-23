@@ -14,6 +14,7 @@
 <style>
   .socketview-display {
     justify-content: space-around;
+    align-items: center;
   }
 </style>
 
