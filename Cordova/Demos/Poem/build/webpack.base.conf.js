@@ -2,6 +2,7 @@
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
+const {VueLoaderPlugin} = require('vue-loader')
 const vueLoaderConfig = require('./vue-loader.conf')
 const srcRoot = path.resolve(__dirname, '../src/')
 const testRoot = path.resolve(__dirname, '../test/')
@@ -22,6 +23,7 @@ const createLintingRule = () => ({
 })
 
 module.exports = {
+  mode: 'development',
   context: path.resolve(__dirname, '../'),
   entry: {
     index: path.resolve(__dirname, '../src/main.js')
@@ -73,7 +75,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('[name].[hash:7].[ext]')
+          name: utils.assetsPath('images/[name].[hash:7].[ext]')
         }
       },
       {
@@ -81,7 +83,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('[name].[hash:7].[ext]')
+          name: utils.assetsPath('videos/[name].[hash:7].[ext]')
         }
       },
       {
@@ -94,6 +96,9 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new VueLoaderPlugin()
+  ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).
