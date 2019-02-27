@@ -42,6 +42,11 @@ cordova build browser # or ios, android
 cordova run browser # or ios, android
 ```
 
+### build android release apk
+```
+cordova build android --release --buildConfig ../config/cordova.json
+```
+
 ## Notes
 ### Local plugins
 Cordova won't rebuild local plugin even the source code of plugin is changed.

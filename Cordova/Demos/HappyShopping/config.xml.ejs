@@ -12,10 +12,11 @@
     </description>
     <author email="694292191@qq.com">east</author>
     <content src="index.html" />
-    <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+    <allow-navigation href="http://*/*" />
+    <allow-navigation href="https://*/*" />
     <platform name="android">
         <allow-intent href="market:*" />
         <preference name="SplashScreenDelay" value="2500" />
@@ -23,12 +24,6 @@
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application/activity[@android:name='MainActivity']">
             <activity android:name="MainActivity" android:windowSoftInputMode="adjustPan" />
         </edit-config>
-        <!-- cordova-plugin-file-opener2 must have the ACTION_INSTALL_PACKAGE permission On Android 8+ -->
-        <config-file parent="/manifest" target="AndroidManifest.xml" xmlns:android="http://schemas.android.com/apk/res/android">
-            <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-        </config-file>
-        <!-- fix wechat plugin issue in cordova 8.0.0 -->
-        <hook type="after_plugin_install" src="../hooks/android/appAndroidAfterPluginInstall.js" />
         <splash density="land-hdpi" src="../res/android/screen/splash-land-hdpi.png" />
         <splash density="land-ldpi" src="../res/android/screen/splash-land-ldpi.png" />
         <splash density="land-mdpi" src="../res/android/screen/splash-land-mdpi.png" />
@@ -77,14 +72,8 @@
     <preference name="DisallowOverscroll" value="true" />
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarBackgroundColor" value="#000000" />
-    <plugin name="cordova-plugin-app-event" spec="^1.2.1" />
-    <plugin name="cordova-plugin-device" spec="^2.0.1" />
-    <plugin name="cordova-plugin-splashscreen" spec="~5.0.2" />
-    <plugin name="cordova-plugin-statusbar" spec="^2.4.1" />
-    <plugin name="cordova-plugin-fullscreen" spec="^1.2.0" />
-    <plugin name="cordova-plugin-wechat" spec="~2.1.0">
-        <variable name="WECHATAPPID" value="<%= wechat_clientid %>" />
-    </plugin>
     <!-- workaround for android build fail -->
     <plugin name="cordova-android-support-gradle-release" spec="~1.2.0" />
+    <plugin name="cordova-plugin-whitelist" spec="1" />
+    <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
 </widget>

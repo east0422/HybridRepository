@@ -7,6 +7,10 @@ let routes = [
     name: 'login',
     component: resolve => require(['@/views/Login'], resolve)
   }, {
+    path: '/register',
+    name: 'register',
+    component: resolve => require(['@/views/Register'], resolve)
+  }, {
     path: '/demodisplay',
     name: 'demodisplay',
     component: resolve => require(['@/views/DemoDisplay'], resolve)
@@ -22,7 +26,13 @@ let routes = [
     path: '/contactcustomerservice',
     name: 'contactcustomerservice',
     component: resolve => require(['@/views/ContactCustomerService'], resolve)
+  }, {
+    path: '/fanliquery/:result?',
+    name: 'fanliquery',
+    props: true,
+    component: resolve => require(['@/views/FanliQuery'], resolve)
   }
+
 ]
 
 export default routes

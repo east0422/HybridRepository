@@ -1,6 +1,6 @@
 <template>
-  <div>
-    联系客服
+  <div class="ccs-display">
+    <span>暂未开放，敬请期待！</span>
   </div>
 </template>
 <script type="text/babel">
@@ -13,5 +13,10 @@
   }
 </script>
 <style lang="scss" rel="stylesheet/scss">
-
+  .ccs-display {
+    text-align: center;
+    justify-content: center;
+    background-color: white;
+    font-size: 20px;
+  }
 </style>

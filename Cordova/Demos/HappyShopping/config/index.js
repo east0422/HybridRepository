@@ -17,10 +17,9 @@ module.exports = {
     productionGzip: false,
     productionGzipExtensions: ['js', 'css'],
     cordova: {
-      appname: '开心购',
+      appname: '聪明购',
       appid: 'com.east.happyshopping',
-      app_ver_build: 0,
-      wechat_clientid: 'wx8a24339219bc8447'
+      app_ver_build: 0
     }
   },
   dev: {
