@@ -18,8 +18,7 @@
       <el-input
         class="pr10"
         v-model="ordernum"
-        placeholder="请把订单号粘贴在这里并提交"
-        @click="inputClicked($event)">
+        placeholder="请把订单号粘贴在这里并提交">
       </el-input>
       <div class="btn" @click="submitOrder">提交订单</div>
     </div>
@@ -44,12 +43,6 @@
       ])
     },
     methods: {
-      inputClicked (event) {
-        window.setTimeout(() => {
-          event.currentTarget.scrollIntoView(false)
-          event.currentTarget.scrollIntoViewIfNeeded()
-        }, 100)
-      },
       fanliClicked () {
         if (this.msg) {
           this.$axios({

@@ -1,14 +1,12 @@
 <template>
   <div class="fill vcontainer login-display">
-    <div class="login-logo"></div>
+    <div class="logo"></div>
     <span class="login-text">返利系统</span>
     <span class="login-text">Dream management system</span>
     <div class="fill vcontainer login-container">
       <el-input
         v-model="account"
         placeholder="请输入账号"
-        autofocus="false"
-        @click="inputCicked($event)"
         @keyup.enter.native="loginClicked">
       </el-input>
       <el-button class="login-btn" @click="loginClicked">登录</el-button>
@@ -27,12 +25,6 @@
       }
     },
     methods: {
-      inputCicked (event) {
-        window.setTimeout(() => {
-          event.currentTarget.scrollIntoView(true)
-          event.currentTarget.scrollIntoViewIfNeeded()
-        }, 100)
-      },
       loginClicked () {
         if (!this.account || this.account.length === 0) {
           Message({
@@ -83,14 +75,6 @@
   .login-display {
     color: red;
     text-align: center;
-  }
-  .login-logo {
-    position: relative;
-    height: 100px;
-    width: 100px;
-    margin: 20px auto;
-    background: url(../image/logo.png) no-repeat center;
-    background-size: contain;
   }
   .login-text {
     border: 1px solid lightgray;

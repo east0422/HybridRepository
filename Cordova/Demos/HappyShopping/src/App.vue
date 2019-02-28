@@ -15,7 +15,7 @@
     </transition>
     <div
       class="app-tab-container hcontainer"
-      v-show="showtab">
+      v-show="showtab && !keyboardshow">
       <div v-for="tab in tabs"
         :key="tab.name"
         :class="['fill vcontainer app-tab', {'app-tab-selected': tab.name === curTabName}]"
@@ -29,6 +29,7 @@
 
 <script type="text/babel">
   import {mapState} from 'vuex'
+  // import {Message} from 'element-ui'
 
   export default {
     name: 'App',
@@ -73,7 +74,8 @@
             name: 'contactcustomerservice'
           }
         }],
-        curTabName: 'first'
+        curTabName: 'first',
+        keyboardshow: false
       }
     },
     computed: {
@@ -107,7 +109,26 @@
       },
       logoutClicked () {
         this.$router.push({name: 'login'})
+      },
+      listenKeyboard () {
+        window.addEventListener('keyboardDidShow', (event) => {
+          this.keyboardshow = true
+          if (document.activeElement.tagName === 'INPUT') {
+            window.scrollTo(0, event.keyboardHeight)
+          }
+        })
+        window.addEventListener('keyboardDidHide', () => {
+          this.keyboardshow = false
+          window.scrollTo(0, 0)
+        })
       }
+    },
+    mounted () {
+      document.addEventListener('deviceready', () => {
+        if (window.device.platform === 'Android') {
+          this.listenKeyboard()
+        }
+      })
     }
   }
 </script>
