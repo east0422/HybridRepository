@@ -26,14 +26,8 @@
     name: 'OrderQuery',
     data () {
       return {
-        copyBtn: null
-      }
-    },
-    props: {
-      result: {
-        type: String,
-        required: true,
-        default: '没有查询结果'
+        copyBtn: null,
+        result: '没有查询结果'
       }
     },
     methods: {
@@ -66,11 +60,19 @@
         })
       },
       backHome () {
-        this.$router.push({name: 'demodisplay'})
+        this.$router.go(-1)
       }
     },
     mounted () {
       this.copyBtn = new Clipboard(this.$refs.fanlicopy)
+    },
+    beforeRouteEnter (to, from, next) {
+      next(vm => {
+        vm.result = to.params.result
+      })
+    },
+    beforeRouteLeave (to, from, next) {
+      next()
     }
   }
 </script>

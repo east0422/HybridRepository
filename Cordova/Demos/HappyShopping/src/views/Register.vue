@@ -3,8 +3,17 @@
     <div class="register-logo"></div>
     <span class="register-text">用户注册</span>
     <div class="fill vcontainer register-container">
-      <el-input v-model="account" placeholder="请输入QQ号码或手机号码"></el-input>
-      <el-input class="register-invite" v-model="inviteaccount" placeholder="请输入邀请人账号"></el-input>
+      <el-input
+        v-model="account"
+        placeholder="请输入QQ号码或手机号码"
+        @click="inputClicked($event)">
+      </el-input>
+      <el-input
+        class="register-invite"
+        v-model="inviteaccount"
+        placeholder="请输入邀请人账号"
+        @click="inputClicked($event)">
+      </el-input>
       <el-button class="register-btn" @click="registerClicked">注册</el-button>
       <el-button class="register-back" @click="backtoLogin">已有账号，返回登录</el-button>
     </div>
@@ -22,6 +31,12 @@
       }
     },
     methods: {
+      inputClicked (event) {
+        window.setTimeout(() => {
+          event.currentTarget.scrollIntoView(true)
+          event.currentTarget.scrollIntoViewIfNeeded()
+        }, 100)
+      },
       registerClicked () {
         if (!this.account || this.account.length === 0) {
           Message({
@@ -43,7 +58,6 @@
           url: '?type=reg&user=' + this.account + '&inviter=' + this.inviteaccount,
           method: 'get'
         }).then((resp) => {
-          console.log('register resp:', resp)
           let respData = resp.data.data
           if (respData.mobile && respData.mobile.length > 0) {
             Message({

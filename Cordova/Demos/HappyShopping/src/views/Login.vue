@@ -4,7 +4,13 @@
     <span class="login-text">返利系统</span>
     <span class="login-text">Dream management system</span>
     <div class="fill vcontainer login-container">
-      <el-input v-model="account" placeholder="请输入账号"></el-input>
+      <el-input
+        v-model="account"
+        placeholder="请输入账号"
+        autofocus="false"
+        @click="inputCicked($event)"
+        @keyup.enter.native="loginClicked">
+      </el-input>
       <el-button class="login-btn" @click="loginClicked">登录</el-button>
       <el-button class="login-register" @click="gotoRegister">没有账号，开始注册</el-button>
     </div>
@@ -21,6 +27,12 @@
       }
     },
     methods: {
+      inputCicked (event) {
+        window.setTimeout(() => {
+          event.currentTarget.scrollIntoView(true)
+          event.currentTarget.scrollIntoViewIfNeeded()
+        }, 100)
+      },
       loginClicked () {
         if (!this.account || this.account.length === 0) {
           Message({
@@ -34,18 +46,23 @@
           url: '?type=login&user=' + this.account,
           method: 'get'
         }).then((resp) => {
-          console.log('login resp:', resp)
-          let respData = resp.data
-          if (respData.data.exesis === 0) {
+          let respData = resp.data.data
+          if (respData.exesis === 0) {
             Message({
-              message: '对不起，您输入账号不存在',
+              message: respData.msg,
               type: 'warning',
               duration: 3 * 1000
             })
           } else {
-            this.$store.commit('setUserinfo', respData.data)
-            this.$store.commit('setType', respData.type)
-            this.$router.push({name: 'demodisplay'})
+            this.$store.commit('setUserinfo', respData)
+            this.$store.commit('setType', resp.data.type)
+            this.$router.push({
+              name: 'query',
+              params: {
+                querytype: '订单',
+                querynow: false
+              }
+            })
           }
         }).catch(error => {
           console.log('login error:', error)

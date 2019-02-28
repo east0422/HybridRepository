@@ -15,13 +15,9 @@ let routes = [
     name: 'demodisplay',
     component: resolve => require(['@/views/DemoDisplay'], resolve)
   }, {
-    path: '/orderquery',
-    name: 'orderquery',
-    component: resolve => require(['@/views/OrderQuery'], resolve)
-  }, {
-    path: '/balancequery',
-    name: 'balancequery',
-    component: resolve => require(['@/views/BalanceQuery'], resolve)
+    path: '/query/:querytype?/:querynow?',
+    name: 'query',
+    component: resolve => require(['@/views/Query'], resolve)
   }, {
     path: '/contactcustomerservice',
     name: 'contactcustomerservice',
@@ -29,7 +25,6 @@ let routes = [
   }, {
     path: '/fanliquery/:result?',
     name: 'fanliquery',
-    props: true,
     component: resolve => require(['@/views/FanliQuery'], resolve)
   }
 

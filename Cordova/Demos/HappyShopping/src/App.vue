@@ -40,22 +40,38 @@
           name: 'first',
           icon: 'el-icon-warning',
           label: '查看操作',
-          path: 'demodisplay'
+          path: {
+            name: 'demodisplay'
+          }
         }, {
           name: 'second',
           icon: 'el-icon-search',
           label: '订单查询',
-          path: 'orderquery'
+          path: {
+            name: 'query',
+            params: {
+              querytype: '订单',
+              querynow: true
+            }
+          }
         }, {
           name: 'third',
           icon: 'el-icon-question',
           label: '余额查询',
-          path: 'balancequery'
+          path: {
+            name: 'query',
+            params: {
+              querytype: '余额',
+              querynow: true
+            }
+          }
         }, {
           name: 'fourth',
           icon: 'el-icon-service',
           label: '联系客服',
-          path: 'contactcustomerservice'
+          path: {
+            name: 'contactcustomerservice'
+          }
         }],
         curTabName: 'first'
       }
@@ -68,10 +84,12 @@
     watch: {
       '$route': function () {
         for (let tab of this.tabs) {
-          if (tab.path === this.$route.name) {
-            this.curTabName = tab.name
-            this.showtab = true
-            return
+          if (tab.path.name === this.$route.name) {
+            if (tab.path.name !== 'query' || this.$route.params.querytype === tab.path.params.querytype) {
+              this.curTabName = tab.name
+              this.showtab = true
+              return
+            }
           }
         }
         this.showtab = false
@@ -79,18 +97,15 @@
     },
     methods: {
       tabChanged (tabname) {
-        if (tabname !== this.curTabName) {
-          for (let tab of this.tabs) {
-            if (tab.name === tabname) {
-              this.curTabName = tabname
-              this.$router.push({name: tab.path})
-              break
-            }
+        for (let tab of this.tabs) {
+          if (tab.name === tabname) {
+            this.curTabName = tabname
+            this.$router.push(tab.path)
+            break
           }
         }
       },
       logoutClicked () {
-        // TODO: 登出处理逻辑
         this.$router.push({name: 'login'})
       }
     }
@@ -115,10 +130,12 @@
     height: 64px;
     text-align: center;
     justify-content: space-between;
-    font-size: 18px;
+    font-size: 14px;
+    overflow: hidden;
   }
   .app-tab {
     justify-content: center;
+    border: 1px solid lightgray;
   }
   .app-tab-selected {
     color: #00a4ce;
