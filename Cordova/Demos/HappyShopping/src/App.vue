@@ -29,7 +29,6 @@
 
 <script type="text/babel">
   import {mapState} from 'vuex'
-  // import {Message} from 'element-ui'
 
   export default {
     name: 'App',
@@ -38,6 +37,17 @@
         effect: 'fade',
         showtab: false,
         tabs: [{
+          name: 'home',
+          icon: 'el-icon-view',
+          label: '首页',
+          path: {
+            name: 'query',
+            params: {
+              querytype: null,
+              querynow: false
+            }
+          }
+        }, {
           name: 'first',
           icon: 'el-icon-warning',
           label: '查看操作',
@@ -74,7 +84,7 @@
             name: 'contactcustomerservice'
           }
         }],
-        curTabName: 'first',
+        curTabName: 'home',
         keyboardshow: false
       }
     },
@@ -139,13 +149,13 @@
     height: 100%;
   }
   .app-header {
-    height: 44px;
-    line-height: 44px;
+    height: 34px;
+    line-height: 34px;
     background-color: red;
     color: white;
     justify-content: space-between;
-    font-size: 18px;
-    padding: 0 5px;
+    font-size: 14px;
+    padding: 0 15px;
   }
   .app-tab-container {
     height: 64px;

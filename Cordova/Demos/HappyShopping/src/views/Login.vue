@@ -51,7 +51,7 @@
             this.$router.push({
               name: 'query',
               params: {
-                querytype: '订单',
+                querytype: null,
                 querynow: false
               }
             })
@@ -78,12 +78,13 @@
   }
   .login-text {
     border: 1px solid lightgray;
-    height: 40px;
-    line-height: 40px;
-    font-size: 24px;
+    height: 35px;
+    line-height: 35px;
+    font-size: 20px;
   }
   .login-container {
-    padding: 30px 10px;
+    padding: 0 10px;
+    padding-top: 20px;
     background-color: white;
   }
   .login-btn {

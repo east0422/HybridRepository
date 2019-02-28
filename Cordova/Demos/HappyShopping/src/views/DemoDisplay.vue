@@ -1,6 +1,6 @@
 <template>
   <div>
-    <iframe frameborder="no" class="demo-iframe" src="http://yunling666.com/step/QQ/"></iframe>
+    <iframe frameborder="no" class="demo-iframe" :src="iframSrc"></iframe>
   </div>
 </template>
 <script type="text/babel">
@@ -8,6 +8,11 @@
     name: 'DemoDisplay',
     data () {
       return {
+      }
+    },
+    computed: {
+      iframSrc () {
+        return 'http://yunling666.com/step/QQ/?noCache=' + new Date().getTime()
       }
     }
   }
