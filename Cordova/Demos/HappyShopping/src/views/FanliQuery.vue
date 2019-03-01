@@ -5,16 +5,16 @@
       <span>返利查询结果</span>
       <div></div>
     </div>
-    <span class="fanli-result">{{result}}</span>
+    <textarea class="fanli-result" v-model="result" disabled="disabled"></textarea>
     <div class="vcontainer btn-container fanli-btns">
-      <button class="btn"
+      <button class="btn fanli-btn"
         data-clipboard-action="copy"
         :data-clipboard-text="result"
         @click="copyClicked"
         ref="fanlicopy">
         点击复制
       </button>
-      <div class="btn" @click="backHome">返回首页</div>
+      <div class="btn fanli-btn" @click="backHome">返回首页</div>
     </div>
   </div>
 </template>
@@ -60,7 +60,13 @@
         })
       },
       backHome () {
-        this.$router.go(-1)
+        this.$router.push({
+          name: 'query',
+          params: {
+            querytype: null,
+            querynow: false
+          }
+        })
       }
     },
     mounted () {
@@ -89,7 +95,7 @@
   }
   .fanli-result {
     display: inline-block;
-    height: 150px;
+    height: 260px;
     width: 80%;
     margin: 20px auto;
     vertical-align: bottom;
@@ -102,5 +108,9 @@
   .fanli-btns {
     width: 80%;
     margin: auto;
+  }
+  .fanli-btn {
+    margin: 10px 0;
+    padding: 10px 20px;
   }
 </style>
