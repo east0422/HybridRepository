@@ -12,8 +12,8 @@
         v-model="inviteaccount"
         placeholder="请输入邀请人账号">
       </el-input>
-      <el-button class="register-btn" @click="registerClicked">注册</el-button>
-      <el-button class="register-back" @click="backtoLogin">已有账号，返回登录</el-button>
+      <div class="btn register-btn" @click="registerClicked">注册</div>
+      <div class="btn register-back" @click="backtoLogin">已有账号，返回登录</div>
     </div>
   </div>
 </template>
@@ -100,13 +100,15 @@
     margin-top: 10px;
   }
   .register-btn {
-    background-color: red;
-    color: white;
+    height: 40px;
+    line-height: 40px;
     margin: 10px 0;
+    background-color: red;
   }
   .register-back {
+    height: 40px;
+    line-height: 40px;
     background-color: lightgray;
-    color: white;
-    margin-left: 0px !important;
+    border-color: lightgray;
   }
 </style>

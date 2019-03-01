@@ -9,9 +9,9 @@
         v-model="msg">
       </el-input>
       <div class="vcontainer btn-container">
-        <div class="btn" @click="fanliClicked">返利查询</div>
-        <div class="btn" @click="msg=''">清空消息</div>
-        <div class="btn" @click="tixianClicked">提现</div>
+        <div class="btn query-btn" @click="fanliClicked">返利查询</div>
+        <div class="btn query-btn" @click="msg=''">清空消息</div>
+        <div class="btn query-btn" @click="tixianClicked">提现</div>
       </div>
     </div>
     <div class="hcontainer pt30 query-order">
@@ -20,7 +20,7 @@
         v-model="ordernum"
         placeholder="请把订单号粘贴在这里并提交">
       </el-input>
-      <div class="btn" @click="submitOrder">提交订单</div>
+      <div class="btn query-btn" @click="submitOrder">提交订单</div>
     </div>
   </div>
 </template>
@@ -128,5 +128,11 @@
   }
   .query-order {
     align-items: center;
+  }
+  .query-btn {
+    color: #fff;
+    background-color: #f56c6c;
+    margin: 10px 0;
+    padding: 10px 20px;
   }
 </style>

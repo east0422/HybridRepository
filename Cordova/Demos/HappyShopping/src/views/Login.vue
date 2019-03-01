@@ -9,8 +9,8 @@
         placeholder="请输入账号"
         @keyup.enter.native="loginClicked">
       </el-input>
-      <el-button class="login-btn" @click="loginClicked">登录</el-button>
-      <el-button class="login-register" @click="gotoRegister">没有账号，开始注册</el-button>
+      <div class="btn login-btn" @click="loginClicked">登录</div>
+      <div class="btn login-register" @click="gotoRegister">没有账号，开始注册</div>
     </div>
   </div>
 </template>
@@ -88,13 +88,15 @@
     background-color: white;
   }
   .login-btn {
-    background-color: red;
-    color: white;
+    height: 40px;
+    line-height: 40px;
     margin: 10px 0;
+    background-color: red;
   }
   .login-register {
     background-color: lightgray;
-    color: white;
-    margin-left: 0px !important;
+    border-color: lightgray;
+    height: 40px;
+    line-height: 40px;
   }
 </style>
