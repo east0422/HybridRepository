@@ -91,7 +91,6 @@
     height: 40px;
     line-height: 40px;
     margin: 10px 0;
-    background-color: red;
   }
   .login-register {
     background-color: lightgray;

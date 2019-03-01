@@ -5,13 +5,23 @@
       <span>用户名：{{userinfo.mobile}}</span>
       <div @click="logoutClicked">退出</div>
     </div>
-    <transition :name="effect" mode="out-in">
+    <transition
+      :name="effect" mode="out-in"
+      v-if="$route.meta.keepAlive">
       <keep-alive>
         <router-view
           id="view"
           class="view fill vcontainer">
         </router-view>
       </keep-alive>
+    </transition>
+    <transition
+      :name="effect" mode="out-in"
+      v-if="!$route.meta.keepAlive">
+      <router-view
+        id="view"
+        class="view fill vcontainer">
+      </router-view>
     </transition>
     <div
       class="app-tab-container hcontainer"
@@ -48,14 +58,7 @@
             }
           }
         }, {
-          name: 'first',
-          icon: 'el-icon-warning',
-          label: '查看操作',
-          path: {
-            name: 'demodisplay'
-          }
-        }, {
-          name: 'second',
+          name: 'orderquery',
           icon: 'el-icon-search',
           label: '订单查询',
           path: {
@@ -66,7 +69,7 @@
             }
           }
         }, {
-          name: 'third',
+          name: 'balancequery',
           icon: 'el-icon-question',
           label: '余额查询',
           path: {
@@ -77,7 +80,14 @@
             }
           }
         }, {
-          name: 'fourth',
+          name: 'demodisplay',
+          icon: 'el-icon-warning',
+          label: '查看操作',
+          path: {
+            name: 'demodisplay'
+          }
+        }, {
+          name: 'contactus',
           icon: 'el-icon-service',
           label: '联系客服',
           path: {
@@ -169,7 +179,7 @@
     border: 1px solid lightgray;
   }
   .app-tab-selected {
-    color: #00a4ce;
+    color: blue;
   }
   [v-cloak] {
     display: none;

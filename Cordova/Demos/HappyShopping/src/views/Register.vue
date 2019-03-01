@@ -103,7 +103,6 @@
     height: 40px;
     line-height: 40px;
     margin: 10px 0;
-    background-color: red;
   }
   .register-back {
     height: 40px;

@@ -130,8 +130,6 @@
     align-items: center;
   }
   .query-btn {
-    color: #fff;
-    background-color: #f56c6c;
     margin: 10px 0;
     padding: 10px 20px;
   }
