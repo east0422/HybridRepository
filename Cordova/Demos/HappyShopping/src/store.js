@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     userinfo: {},
-    type: ''
+    type: '',
+    bottomhidden: false
   },
   mutations: {
     setUserinfo (state, _userinfo) {
@@ -14,6 +15,9 @@ const store = new Vuex.Store({
     },
     setType (state, _type) {
       state.type = _type
+    },
+    setBottomHidden (state, _bottomhidden) {
+      state.bottomhidden = _bottomhidden
     }
   }
 })

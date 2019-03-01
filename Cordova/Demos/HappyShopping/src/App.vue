@@ -135,10 +135,13 @@
           this.keyboardshow = true
           if (document.activeElement.tagName === 'INPUT') {
             window.scrollTo(0, event.keyboardHeight)
+          } else if (document.activeElement.tagName === 'TEXTAREA') {
+            this.$store.commit('setBottomHidden', true)
           }
         })
         window.addEventListener('keyboardDidHide', () => {
           this.keyboardshow = false
+          this.$store.commit('setBottomHidden', false)
           window.scrollTo(0, 0)
         })
       }

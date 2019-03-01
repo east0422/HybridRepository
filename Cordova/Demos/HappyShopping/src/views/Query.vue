@@ -6,7 +6,9 @@
         type="textarea"
         :rows="13"
         placeholder="请输入内容"
-        v-model="msg">
+        v-model="msg"
+        @focus="focusTrigged"
+        @blur="blurTrigged">
       </el-input>
       <div class="vcontainer btn-container">
         <div class="btn query-btn" @click="fanliClicked">返利查询</div>
@@ -14,7 +16,7 @@
         <div class="btn query-btn" @click="tixianClicked">提现</div>
       </div>
     </div>
-    <div class="hcontainer pt30 query-order">
+    <div class="hcontainer pt30 query-order" v-show="!bottomhidden">
       <el-input
         class="pr10"
         v-model="ordernum"
@@ -39,10 +41,19 @@
     },
     computed: {
       ...mapState([
-        'userinfo'
+        'userinfo',
+        'bottomhidden'
       ])
     },
     methods: {
+      focusTrigged () {
+        this.$store.commit('setBottomHidden', true)
+      },
+      blurTrigged () {
+        setTimeout(() => {
+          this.$store.commit('setBottomHidden', false)
+        }, 300)
+      },
       fanliClicked () {
         if (this.msg) {
           this.$axios({
