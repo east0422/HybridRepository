@@ -63,7 +63,7 @@
         this.$router.push({
           name: 'query',
           params: {
-            querytype: null,
+            querytype: '',
             querynow: false
           }
         })

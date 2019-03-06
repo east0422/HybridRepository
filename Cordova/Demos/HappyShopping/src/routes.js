@@ -44,6 +44,13 @@ let routes = [
     meta: {
       keepAlive: false
     }
+  }, {
+    path: '/binddemo',
+    name: 'binddemo',
+    component: resolve => require(['@/views/BindDemo'], resolve),
+    meta: {
+      keepAlive: false
+    }
   }
 
 ]

@@ -28,7 +28,7 @@
 </template>
 <script type="text/babel">
   import {mapState} from 'vuex'
-  import {Message} from 'element-ui'
+  import {Message, MessageBox} from 'element-ui'
 
   export default {
     name: 'OrderQuery',
@@ -77,7 +77,29 @@
         }
       },
       tixianClicked () {
-        this.queryByMsg('提现')
+        this.$axios({
+          url: '?type=query&user=' + this.userinfo.mobile + '&msg=' + window.encodeURI('提现') + '&sign=' + this.userinfo.sign,
+          method: 'get'
+        }).then((resp) => {
+          if (resp.data.data && resp.data.data.msg === 'no-openid') {
+            MessageBox.confirm('未绑定收款账号，是否查看如何绑定？', '提现', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning',
+              customClass: 'query-messagebox',
+              showClose: false,
+              center: true
+            }).then(() => {
+              this.$router.push({name: 'binddemo'})
+            }).catch(() => {
+              this.msg = '对不起，您还未绑定收款账号，请先绑定账号再提现！'
+            })
+          } else {
+            this.msg = resp.data.data.msg
+          }
+        }).catch(error => {
+          console.log('login error:', error)
+        })
       },
       submitOrder () {
         if (this.ordernum) {
@@ -143,5 +165,9 @@
   .query-btn {
     margin: 10px 0;
     padding: 10px 20px;
+  }
+  .query-messagebox {
+    margin-top: 30%;
+    width: 100%;
   }
 </style>

@@ -21,6 +21,22 @@ axios.defaults.timeout = 15000
 Vue.prototype.$axios = axios
 
 let router = new VueRouter({routes: routes})
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') {
+    if (JSON.stringify(store.state.userinfo) === '{}') {
+      next()
+    } else {
+      next({name: 'query',
+        params: {
+          querytype: '',
+          querynow: false
+        }
+      })
+    }
+  } else {
+    next()
+  }
+})
 
 /* eslint-disable no-new */
 new Vue({

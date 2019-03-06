@@ -19,7 +19,7 @@
 </script>
 <style lang="scss" rel="stylesheet/scss">
   .demo-iframe {
-    height: 100%;
+    height: 90%;
     width: 100%;
   }
 </style>

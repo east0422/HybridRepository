@@ -18,7 +18,7 @@ module.exports = {
     productionGzipExtensions: ['js', 'css'],
     cordova: {
       appname: '聪明购',
-      appid: 'com.east.happyshopping',
+      appid: 'com.yunling.shopping',
       app_ver_build: 0
     }
   },
