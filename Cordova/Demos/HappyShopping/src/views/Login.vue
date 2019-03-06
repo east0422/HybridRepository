@@ -1,5 +1,8 @@
 <template>
-  <div class="fill vcontainer login-display">
+  <div class="fill vcontainer login-display"
+    v-loading="logining"
+    element-loading-text="正在登录中......"
+    element-loading-background="rgba(0, 0, 0, 0.6)">
     <div class="logo"></div>
     <span class="login-text">返利系统</span>
     <span class="login-text">Dream management system</span>
@@ -21,7 +24,8 @@
     name: 'Login',
     data () {
       return {
-        account: ''
+        account: '',
+        logining: false
       }
     },
     methods: {
@@ -34,10 +38,15 @@
           })
           return
         }
+        if (this.logining) {
+          return
+        }
+        this.logining = true
         this.$axios({
           url: '?type=login&user=' + this.account,
           method: 'get'
         }).then((resp) => {
+          this.logining = false
           let respData = resp.data.data
           if (respData.exesis === 0) {
             Message({
@@ -57,6 +66,7 @@
             })
           }
         }).catch(error => {
+          this.logining = false
           console.log('login error:', error)
           Message({
             message: '对不起，登录出错',

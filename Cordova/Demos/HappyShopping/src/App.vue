@@ -105,7 +105,6 @@
     },
     watch: {
       '$route': function () {
-        console.log('route:', this.$route)
         for (let tab of this.tabs) {
           if (tab.path.name === this.$route.name) {
             if (tab.path.name !== 'query' || this.$route.params.querytype === tab.path.params.querytype) {

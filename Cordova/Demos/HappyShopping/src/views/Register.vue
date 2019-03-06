@@ -1,5 +1,8 @@
 <template>
-  <div class="fill vcontainer register-display">
+  <div class="fill vcontainer register-display"
+    v-loading="registering"
+    element-loading-text="正在注册中......"
+    element-loading-background="rgba(0, 0, 0, 0.6)">
     <div class="logo"></div>
     <span class="register-text">用户注册</span>
     <div class="fill vcontainer register-container">
@@ -25,7 +28,8 @@
     data () {
       return {
         account: '',
-        inviteaccount: ''
+        inviteaccount: '',
+        registering: false
       }
     },
     methods: {
@@ -46,10 +50,15 @@
           })
           return
         }
+        if (this.registering) {
+          return
+        }
+        this.registering = true
         this.$axios({
           url: '?type=reg&user=' + this.account + '&inviter=' + this.inviteaccount,
           method: 'get'
         }).then((resp) => {
+          this.registering = false
           let respData = resp.data.data
           if (respData.mobile && respData.mobile.length > 0) {
             Message({
@@ -66,6 +75,7 @@
             })
           }
         }).catch(error => {
+          this.registering = false
           console.log('register error:', error)
           Message({
             message: '对不起，注册出错！',

@@ -47,12 +47,16 @@
     },
     methods: {
       focusTrigged () {
-        this.$store.commit('setBottomHidden', true)
+        if (window.device.platform === 'Android') {
+          this.$store.commit('setBottomHidden', true)
+        }
       },
       blurTrigged () {
-        setTimeout(() => {
-          this.$store.commit('setBottomHidden', false)
-        }, 300)
+        if (window.device.platform === 'Android') {
+          setTimeout(() => {
+            this.$store.commit('setBottomHidden', false)
+          }, 300)
+        }
       },
       fanliClicked () {
         if (this.msg) {

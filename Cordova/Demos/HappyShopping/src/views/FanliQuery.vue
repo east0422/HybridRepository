@@ -46,8 +46,6 @@
             type: 'success',
             duration: 2 * 1000
           })
-          // 释放内存
-          this.copyBtn.destroy()
         })
         this.copyBtn.on('error', e => {
           Message({
@@ -55,8 +53,6 @@
             type: 'error',
             duration: 2 * 1000
           })
-          // 释放内存
-          this.copyBtn.destroy()
         })
       },
       backHome () {
@@ -78,6 +74,10 @@
       })
     },
     beforeRouteLeave (to, from, next) {
+      if (this.copyBtn) {
+        // 释放内存
+        this.copyBtn.destroy()
+      }
       next()
     }
   }
@@ -100,10 +100,11 @@
     margin: 20px auto;
     vertical-align: bottom;
     font-size: 14px;
-    color: #606266;
-    background-color: #fff;
-    border: 1px solid #dcdfe6;
+    color: black;
+    background-color: white;
+    border: 1px solid white;
     border-radius: 4px;
+    opacity: 1;
   }
   .fanli-btns {
     width: 80%;
