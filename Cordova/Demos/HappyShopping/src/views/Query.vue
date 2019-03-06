@@ -12,7 +12,7 @@
       </el-input>
       <div class="vcontainer btn-container">
         <div class="btn query-btn" @click="fanliClicked">返利查询</div>
-        <div class="btn query-btn" @click="msg=''">清空消息</div>
+        <div class="btn query-btn" @click="clearClicked">清空消息</div>
         <div class="btn query-btn" @click="tixianClicked">提现</div>
       </div>
     </div>
@@ -58,11 +58,23 @@
           }, 300)
         }
       },
+      clearClicked () {
+        this.msg = ''
+        this.ordernum = ''
+      },
       fanliClicked () {
         if (this.msg) {
+          let oldmsg = this.msg
+          this.msg = '正在处理中......'
           this.$axios({
-            url: '?type=query&user=' + this.userinfo.mobile + '&msg=' + window.encodeURI(this.msg) + '&sign=' + this.userinfo.sign,
-            method: 'get'
+            url: '',
+            method: 'post',
+            data: {
+              'type': 'query',
+              'user': this.userinfo.mobile,
+              'msg': window.encodeURI(oldmsg),
+              'sign': this.userinfo.sign
+            }
           }).then((resp) => {
             let result = '没有查询结果'
             if (resp.data.data && resp.data.data.msg) {
@@ -70,7 +82,8 @@
             }
             this.$router.push({name: 'fanliquery', params: {result: result}})
           }).catch(error => {
-            console.log('login error:', error)
+            this.msg = '对不起，返利查询出错！'
+            console.log('fanliquery error:', error)
           })
         } else {
           Message({
@@ -81,9 +94,16 @@
         }
       },
       tixianClicked () {
+        this.msg = '正在处理中......'
         this.$axios({
-          url: '?type=query&user=' + this.userinfo.mobile + '&msg=' + window.encodeURI('提现') + '&sign=' + this.userinfo.sign,
-          method: 'get'
+          url: '',
+          method: 'post',
+          data: {
+            'type': 'query',
+            'user': this.userinfo.mobile,
+            'msg': window.encodeURI('提现'),
+            'sign': this.userinfo.sign
+          }
         }).then((resp) => {
           if (resp.data.data && resp.data.data.msg === 'no-openid') {
             MessageBox.confirm('未绑定收款账号，是否查看如何绑定？', '提现', {
@@ -102,6 +122,7 @@
             this.msg = resp.data.data.msg
           }
         }).catch(error => {
+          this.msg = '对不起，提现出错！'
           console.log('login error:', error)
         })
       },
@@ -117,14 +138,24 @@
         }
       },
       queryByMsg (msg) {
+        this.msg = '正在处理中......'
         this.$axios({
-          url: '?type=query&user=' + this.userinfo.mobile + '&msg=' + window.encodeURI(msg) + '&sign=' + this.userinfo.sign,
-          method: 'get'
+          url: '',
+          method: 'post',
+          data: {
+            'type': 'query',
+            'user': this.userinfo.mobile,
+            'msg': window.encodeURI(msg),
+            'sign': this.userinfo.sign
+          }
         }).then((resp) => {
           if (resp.data.data && resp.data.data.msg) {
             this.msg = resp.data.data.msg
+          } else {
+            this.msg = '对不起，没有找到对应的数据!'
           }
         }).catch(error => {
+          this.msg = '对不起，查询出错！'
           console.log('login error:', error)
         })
       },

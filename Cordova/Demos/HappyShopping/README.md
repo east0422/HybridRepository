@@ -47,6 +47,14 @@ cordova run browser # or ios, android
 cordova build android --release --buildConfig ../config/cordova.json
 ```
 
+### build ios release ipa 
+```
+select device -> Generic iOS Device
+change .plist -> Localization native development region -> (English -> China)
+change version and build version
+change Build Settings sign -> iOS Developer
+```
+
 ## Notes
 ### Local plugins
 Cordova won't rebuild local plugin even the source code of plugin is changed.

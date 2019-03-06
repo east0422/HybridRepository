@@ -16,7 +16,8 @@ Vue.config.productionTip = false
 Vue.use(ElementUI, {locale})
 Vue.use(VueRouter)
 
-axios.defaults.baseURL = 'http://php.9gola.cn/yunling/index.php'
+axios.defaults.baseURL = 'http://app.yunling888.com/index.php'
+axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.defaults.timeout = 15000
 Vue.prototype.$axios = axios
 

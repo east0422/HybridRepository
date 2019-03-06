@@ -55,8 +55,13 @@
         }
         this.registering = true
         this.$axios({
-          url: '?type=reg&user=' + this.account + '&inviter=' + this.inviteaccount,
-          method: 'get'
+          url: '',
+          method: 'post',
+          data: {
+            'type': 'reg',
+            'user': this.account,
+            'inviter': this.inviteaccount
+          }
         }).then((resp) => {
           this.registering = false
           let respData = resp.data.data

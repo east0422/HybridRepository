@@ -43,8 +43,12 @@
         }
         this.logining = true
         this.$axios({
-          url: '?type=login&user=' + this.account,
-          method: 'get'
+          url: '',
+          method: 'post',
+          data: {
+            'type': 'login',
+            'user': this.account
+          }
         }).then((resp) => {
           this.logining = false
           let respData = resp.data.data
