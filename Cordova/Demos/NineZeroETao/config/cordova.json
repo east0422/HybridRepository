@@ -1,0 +1,18 @@
+{
+  "android": {
+    "debug": {
+      "keystore": "~/keys/xiao.jks",
+      "alias": "xiao",
+      "storePassword": "xiao1234",
+      "password" : "xiao1234",
+      "keystoreType": "jks"
+    },
+    "release": {
+      "keystore": "~/keys/xiao.jks",
+      "alias": "xiao",
+      "storePassword": "xiao1234",
+      "password" : "xiao1234",
+      "keystoreType": "jks"
+    }
+  }
+}

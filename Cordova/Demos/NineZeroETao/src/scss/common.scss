@@ -1,0 +1,67 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 62.5%;
+  background-color: #f1f1f3;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.fill {
+  flex: 1;
+}
+.vcontainer {
+  display: flex;
+  flex-direction: column;
+}
+.hcontainer {
+  display: flex;
+  flex-direction: row;
+}
+.logo {
+  position: relative;
+  height: 100px;
+  width: 100px;
+  margin: 10px auto;
+  background: url(../image/logo.png) no-repeat center;
+  background-size: contain;
+}
+.center {
+  text-align: center;
+}
+.btn-container {
+  height: 60%;
+}
+.btn {
+  display: inline-block;
+  color: white;
+  background-color: red;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid red;
+  -webkit-appearance: none;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  outline: 0;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 4px; 
+}
+.pt30 {
+  padding-top: 30px;
+}
+.pr10 {
+  padding-right: 10px;
+}
+.message {
+  color: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+// 取消a超链接下划线
+a {
+  text-decoration: none;
+}
