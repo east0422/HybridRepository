@@ -10,13 +10,6 @@ let routes = [
       keepAlive: true
     }
   }, {
-    path: '/register',
-    name: 'register',
-    component: resolve => require(['@/views/Register'], resolve),
-    meta: {
-      keepAlive: true
-    }
-  }, {
     path: '/demodisplay',
     name: 'demodisplay',
     component: resolve => require(['@/views/DemoDisplay'], resolve),
