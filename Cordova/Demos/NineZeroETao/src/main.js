@@ -27,12 +27,7 @@ router.beforeEach((to, from, next) => {
     if (JSON.stringify(store.state.userinfo) === '{}') {
       next()
     } else {
-      next({name: 'query',
-        params: {
-          querytype: '',
-          querynow: false
-        }
-      })
+      next({name: 'main'})
     }
   } else {
     next()

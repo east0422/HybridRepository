@@ -5,47 +5,12 @@ let routes = [
   }, {
     path: '/login',
     name: 'login',
-    component: resolve => require(['@/views/Login'], resolve),
-    meta: {
-      keepAlive: true
-    }
+    component: resolve => require(['@/views/Login'], resolve)
   }, {
-    path: '/demodisplay',
-    name: 'demodisplay',
-    component: resolve => require(['@/views/DemoDisplay'], resolve),
-    meta: {
-      keepAlive: false
-    }
-  }, {
-    path: '/query/:querytype?/:querynow?',
-    name: 'query',
-    component: resolve => require(['@/views/Query'], resolve),
-    meta: {
-      keepAlive: false
-    }
-  }, {
-    path: '/contactcustomerservice',
-    name: 'contactcustomerservice',
-    component: resolve => require(['@/views/ContactCustomerService'], resolve),
-    meta: {
-      keepAlive: true
-    }
-  }, {
-    path: '/fanliquery/:result?',
-    name: 'fanliquery',
-    component: resolve => require(['@/views/FanliQuery'], resolve),
-    meta: {
-      keepAlive: false
-    }
-  }, {
-    path: '/binddemo',
-    name: 'binddemo',
-    component: resolve => require(['@/views/BindDemo'], resolve),
-    meta: {
-      keepAlive: false
-    }
+    path: '/main',
+    name: 'main',
+    component: resolve => require(['@/views/Main'], resolve)
   }
-
 ]
 
 export default routes

@@ -3,16 +3,16 @@
     <div class="login-logo"></div>
     <div class="login-content">
       <div class="login-btn-container hcontainer">
-        <el-button type="text"
-          :class="[{'login-btn-active': active === 1}, 'login-btn']"
+        <div
+          :class="[active === 1 ? 'login-btn-active' : 'login-btn-inactive']"
           @click="active = 1">
           登录
-        </el-button>
-        <el-button type="text"
-          :class="[{'login-btn-active': active === 2}, 'login-btn']"
+        </div>
+        <div
+          :class="[active === 2 ? 'login-btn-active' : 'login-btn-inactive']"
           @click="active = 2">
           注册
-        </el-button>
+        </div>
       </div>
       <el-form v-show="active === 1"
         label-position="left"
@@ -52,7 +52,7 @@
         <el-form-item prop="regaccount">
           <el-input
             v-model.number="regForm.regaccount"
-            @click.native.prevent="handleRegister"
+            @keyup.enter.native="handleRegister"
             autoComplete="on"
             placeholder="请输入用户账号">
             <i slot="prefix" class="el-input__icon el-icon-login-account"></i>
@@ -61,7 +61,7 @@
         <el-form-item prop="inviteaccount">
           <el-input
             v-model.number="regForm.inviteaccount"
-            @click.native.prevent="handleRegister"
+            @keyup.enter.native="handleRegister"
             autoComplete="on"
             placeholder="请输入邀请人账号">
             <i slot="prefix" class="el-input__icon el-icon-login-invite"></i>
@@ -82,6 +82,7 @@
 
 <script type="text/babel">
   import {Message} from 'element-ui'
+  import md5 from 'js-md5'
 
   export default {
     name: 'Login',
@@ -126,10 +127,10 @@
           method: 'post',
           data: {
             'type': 'login',
-            'user': this.loginForm.loginaccount
+            'user': this.loginForm.loginaccount,
+            'sign': md5('xxs' + this.loginForm.loginaccount + 'xxs')
           }
         }).then((resp) => {
-          console.log('login:', resp.data)
           this.logining = false
           let respData = resp.data
           if (!respData.login) { // 登录失败
@@ -140,13 +141,7 @@
             })
           } else {
             this.$store.commit('setUserinfo', respData.data)
-            this.$router.push({
-              name: 'query',
-              params: {
-                querytype: '',
-                querynow: false
-              }
-            })
+            this.$router.push({name: 'main'})
           }
         }).catch(error => {
           console.log('login error:', error)
@@ -175,26 +170,21 @@
           data: {
             'type': 'reg',
             'user': this.regForm.regaccount,
-            'inviter': this.regForm.inviteaccount
+            'inviter': this.regForm.inviteaccount,
+            'sign': md5('xxs' + this.regForm.regaccount + 'xxs')
           }
         }).then((resp) => {
-          console.log('reg:', resp.data)
           this.registering = false
-          let respData = resp.data.data
-          if (respData.mobile && respData.mobile.length > 0) {
+          let respData = resp.data
+          if (!respData.login) { // 注册失败
             Message({
-              message: '恭喜你，注册成功！',
-              type: 'success',
-              duration: 3 * 1000
-            })
-            // this.$router.push({name: 'login'})
-          } else {
-            Message({
-              message: '对不起，该邀请人不存在！',
+              message: respData.err,
               type: 'error',
-              center: true,
               duration: 3 * 1000
             })
+          } else {
+            this.$store.commit('setUserinfo', respData.data)
+            this.$router.push({name: 'main'})
           }
         }).catch(error => {
           console.log('register error:', error)
@@ -243,19 +233,22 @@
     justify-content: center;
     padding-bottom: 20px;
   }
-  .login-btn {
+  .login-btn-inactive {
     font-size: 20px;
+    margin: 0 5px;
     color: #ffffff;
   }
   .login-btn-active {
-    color: #409eff !important;
-    border-bottom: 3px solid #409eff !important;
+    font-size: 20px;
+    margin: 0 5px;
+    color: #409eff;
+    border-bottom: 3px solid #409eff;
   }
   .login-handle {
     height: 50px;
     width: 100%;
     font-size: 22px;
-    color: #ffffff;
+    color: #409eff;
     background-color: #80CE6B;
     border-color: #80CE6B;
     border-radius: 10px;

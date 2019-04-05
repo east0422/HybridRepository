@@ -27,11 +27,11 @@ html, body {
 .btn {
   display: inline-block;
   color: white;
-  background-color: red;
+  background-color: #457A2C;
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  border: 1px solid red;
+  border: 1px solid #457A2C;
   -webkit-appearance: none;
   text-align: center;
   -webkit-box-sizing: border-box;
@@ -40,6 +40,12 @@ html, body {
   font-weight: bold;
   font-size: 14px;
   border-radius: 4px; 
+  margin: 10px 0;
+  padding: 10px 20px;
+}
+.bgred {
+  background-color: red !important;
+  border: 1px solid red !important;
 }
 .pt30 {
   padding-top: 30px;
