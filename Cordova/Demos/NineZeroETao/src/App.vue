@@ -1,12 +1,10 @@
 <template>
   <div class="app fill">
     <transition :name="effect" mode="out-in">
-      <keep-alive>
-        <router-view
-          id="view"
-          class="view fill vcontainer">
-        </router-view>
-      </keep-alive>
+      <router-view
+        id="view"
+        class="view fill vcontainer">
+      </router-view>
     </transition>
   </div>
 </template>

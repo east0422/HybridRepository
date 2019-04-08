@@ -185,7 +185,7 @@
     align-items: center;
   }
   .content-tip {
-    font-size: 8px;
+    font-size: 12px;
     width: 100px;
     color: red;
   }

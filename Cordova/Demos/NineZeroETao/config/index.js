@@ -18,7 +18,7 @@ module.exports = {
     productionGzipExtensions: ['js', 'css'],
     cordova: {
       appname: '九零e淘',
-      appid: 'com.90.etao'
+      appid: 'com.ninety.etao'
     }
   },
   dev: {

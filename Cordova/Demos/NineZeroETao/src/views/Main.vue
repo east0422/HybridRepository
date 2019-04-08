@@ -39,6 +39,7 @@
         switch (key) {
           case 'home':
             this.curcomponent = this.component.content
+            this.$refs.content.clearClicked()
             break
           case 'menu':
             this.curcomponent = this.component.content

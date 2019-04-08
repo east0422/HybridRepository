@@ -12,7 +12,7 @@
     },
     computed: {
       iframSrc () {
-        return 'http://quan.9gola.cn/?noCache=' + new Date().getTime()
+        return 'http://quan.9gola.cn/coupon/index?cid=0&noCache=' + new Date().getTime()
       }
     }
   }
