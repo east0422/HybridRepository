@@ -2,7 +2,7 @@
   <div class="main-display fill">
     <app-header></app-header>
     <app-content v-show="curcomponent === component.content" ref="content"></app-content>
-    <coupon v-show="curcomponent === component.coupon"></coupon>
+    <coupon v-show="curcomponent === component.coupon" ref="coupon"></coupon>
     <customer-service v-show="curcomponent === component.customerservice"></customer-service>
     <app-tabbar v-show="!keyboardshow" @tabchanged="tabChanged"></app-tabbar>
   </div>
@@ -66,6 +66,7 @@
             break
           case 'coupon':
             this.curcomponent = this.component.coupon
+            this.$refs.coupon.fetchCouponList(() => {}, () => {})
             break
           case 'customerservice':
             this.curcomponent = this.component.customerservice

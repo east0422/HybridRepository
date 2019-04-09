@@ -1,18 +1,127 @@
 <template>
   <div class="fill vcontainer coupon-display">
-    <iframe frameborder="no" class="coupon-iframe" :src="iframSrc"></iframe>
+    <div class="coupon-header vcontainer">
+      <div class="hcontainer coupon-searchcontainer">
+        <el-input v-model="couponname" class="coupon-search-input" placeholder="请输入内容" clearable></el-input>
+        <button class="coupon-search-btn" @click="searchClicked">搜索</button>
+      </div>
+      <span class="coupon-tip">[每日4点更新5万款产品/页面上拉翻页]</span>
+    </div>
+    <div class="coupon-tabs">
+      <a
+        v-for="item in tabs"
+        :key="item.cid"
+        :class="['coupon-tab', {'coupon-tab-selected': item.cid === activecid}]"
+        @click="tabChanged(item)">
+        {{item.title}}
+      </a>
+    </div>
+    <pull-to :bottom-load-method="loadmore" v-loading="loading">
+      <coupon-item v-for="couponitem in couponlist" :key="couponitem.cid" :couponitem="couponitem">
+      </coupon-item>
+    </pull-to>
   </div>
 </template>
 <script type="text/babel">
+  import PullTo from 'vue-pull-to'
+  import CouponItem from '@/components/CouponItem'
+
   export default {
     name: 'Coupon',
+    components: {
+      PullTo,
+      CouponItem
+    },
     data () {
       return {
+        couponname: null,
+        couponlist: [],
+        tabs: [{
+          index: 0,
+          cid: '0',
+          title: '全部'
+        }, {
+          index: 1,
+          cid: '1',
+          title: '女装'
+        }, {
+          index: 2,
+          cid: '9',
+          title: '男装'
+        }, {
+          index: 3,
+          cid: '10',
+          title: '内衣'
+        }, {
+          index: 4,
+          cid: '2',
+          title: '母婴'
+        }, {
+          index: 5,
+          cid: '3',
+          title: '化妆品'
+        }, {
+          index: 6,
+          cid: '4',
+          title: '居家'
+        }, {
+          index: 7,
+          cid: '5',
+          title: '鞋包配饰'
+        }, {
+          index: 8,
+          cid: '6',
+          title: '美食'
+        }, {
+          index: 9,
+          cid: '7',
+          title: '文体车品'
+        }, {
+          index: 10,
+          cid: '8',
+          title: '数码家电'
+        }],
+        activecid: '0',
+        pageNum: 1,
+        loading: false
       }
     },
-    computed: {
-      iframSrc () {
-        return 'http://quan.9gola.cn/coupon/index?cid=0&noCache=' + new Date().getTime()
+    methods: {
+      fetchCouponList (successCallback, errorCallback) {
+        this.loading = true
+        this.$axios({
+          url: 'http://quan.9gola.cn/api/taobao.ashx',
+          method: 'post',
+          data: 'method=getQuan&key=' + this.couponname + '&page=' + this.pageNum + '&cid=' + this.activecid
+        }).then((resp) => {
+          console.log('search coupon resp:', resp.data)
+          this.loading = false
+          successCallback()
+          let respData = resp.data
+          this.couponlist = respData.message
+        }).catch(error => {
+          console.log('login error:', error)
+          this.loading = false
+          errorCallback()
+        })
+      },
+      loadmore (loaded) {
+        this.pageNum = this.pageNum + 1
+        this.fetchCouponList(() => {
+          loaded('done')
+        }, () => {
+          loaded('fail')
+        })
+      },
+      searchClicked () {
+        this.pageNum = 1
+        this.activecid = this.tabs[0].cid
+        this.fetchCouponList(() => {}, () => {})
+      },
+      tabChanged (item) {
+        this.activecid = item.cid
+        this.couponname = null
+        this.fetchCouponList(() => {}, () => {})
       }
     }
   }
@@ -21,8 +130,53 @@
   .coupon-display {
     padding-bottom: 60px;
   }
-  .coupon-iframe {
-    height: 100%;
-    width: 100%;
+  .coupon-header {
+    height: 130px;
+    background: url(../images/coupon_tip_bg.png) no-repeat center/100% 100% #fb6125;
+  }
+  .coupon-searchcontainer {
+    align-items: center;
+    padding: 10px;
+    padding-top: 20px;
+  }
+  .coupon-search-input {
+    text-align: center;
+    font-size: 16px;
+  }
+  .coupon-search-btn{
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: #fb6125;
+    background-color: white;
+    border: none;
+    border-radius: 3px;
+    font-size: 16px;
+    margin-left: 10px;
+  }
+  .coupon-tip {
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    padding: 10px;
+  }
+  .coupon-tabs {
+    font-size: 16px;
+    color: black;
+    background-color: white;
+    flex-flow: wrap; // auto line break
+    border-bottom: 2px dotted #D0D0D0;
+  }
+  .coupon-tab {
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 4px;
+    margin-left: 10px;
+    text-align: center;
+  }
+  .coupon-tab-selected {
+    color: #ff6255;
   }
 </style>
