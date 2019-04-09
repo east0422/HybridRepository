@@ -97,8 +97,11 @@
           console.log('search coupon resp:', resp.data)
           this.loading = false
           successCallback()
-          let respData = resp.data
-          this.couponlist = respData.message
+          this.couponlist = []
+          this.$nextTick(() => {
+            let respData = resp.data
+            this.couponlist = respData.message
+          })
         }).catch(error => {
           console.log('login error:', error)
           this.loading = false
