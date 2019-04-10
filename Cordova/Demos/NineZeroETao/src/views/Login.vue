@@ -14,67 +14,53 @@
           注册
         </div>
       </div>
-      <el-form v-show="active === 1"
-        label-position="left"
-        autoComplete="on"
-        :model="loginForm"
-        :rules="loginRules"
+      <div v-show="active === 1"
+        class="vcontainer"
         v-loading="logining"
         element-loading-text="正在登录中......"
-        element-loading-background="rgba(0, 0, 0, 0.6)"
-        ref="loginForm">
-        <el-form-item prop="loginaccount">
-          <el-input type="text"
-            v-model.number="loginForm.loginaccount"
-            @keyup.enter.native="handleLogin"
-            autoComplete="on"
-            placeholder="请输入用户账号">
-            <i slot="prefix" class="el-input__icon el-icon-login-account"></i>
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            class="login-handle"
-            @click.native.prevent="handleLogin">
-            登&nbsp;&nbsp;&nbsp;录
-          </el-button>
-        </el-form-item>
-      </el-form>
-      <el-form v-show="active === 2"
-        label-position="left"
-        autoComplete="on"
-        :model="regForm"
-        :rules="regRules"
+        element-loading-background="rgba(0, 0, 0, 0.6)">
+        <el-input type="text"
+          v-model.number="loginForm.loginaccount"
+          @keyup.enter.native="handleLogin"
+          placeholder="请输入用户账号">
+          <i slot="prefix" class="el-input__icon el-icon-login-account"></i>
+        </el-input>
+        <span class="login-validate-error">
+          <a v-show="loginerror">请输入7到11位数字用户账号登录！</a>
+        </span>
+        <el-button
+          class="login-handle"
+          @click.native.prevent="handleLogin">
+          登&nbsp;&nbsp;&nbsp;录
+        </el-button>
+      </div>
+      <div v-show="active === 2"
+        class="vcontainer"
         v-loading="registering"
         element-loading-text="正在注册中......"
-        element-loading-background="rgba(0, 0, 0, 0.6)"
-        ref="regForm">
-        <el-form-item prop="regaccount">
-          <el-input
-            v-model.number="regForm.regaccount"
-            @keyup.enter.native="handleRegister"
-            autoComplete="on"
-            placeholder="请输入用户账号">
-            <i slot="prefix" class="el-input__icon el-icon-login-account"></i>
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="inviteaccount">
-          <el-input
-            v-model.number="regForm.inviteaccount"
-            @keyup.enter.native="handleRegister"
-            autoComplete="on"
-            placeholder="请输入邀请人账号">
-            <i slot="prefix" class="el-input__icon el-icon-login-invite"></i>
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            class="login-handle"
-            @click.native.prevent="handleRegister">
-            注&nbsp;&nbsp;&nbsp;册
-          </el-button>
-        </el-form-item>
-      </el-form>
+        element-loading-background="rgba(0, 0, 0, 0.6)">
+        <el-input
+          v-model.number="regForm.regaccount"
+          @keyup.enter.native="handleRegister"
+          placeholder="请输入用户账号">
+          <i slot="prefix" class="el-input__icon el-icon-login-account"></i>
+        </el-input>
+        <span class="login-validate-error"><a v-show="regerror">请输入7到11位数字！</a></span>
+        <el-input
+          v-model.number="regForm.inviteaccount"
+          @keyup.enter.native="handleRegister"
+          placeholder="请输入邀请人账号">
+          <i slot="prefix" class="el-input__icon el-icon-login-invite"></i>
+        </el-input>
+        <span class="login-validate-error">
+          <a v-show="reginviteerror">请输入7到11位数字邀请人账号！</a>
+        </span>
+        <el-button
+          class="login-handle"
+          @click.native.prevent="handleRegister">
+          注&nbsp;&nbsp;&nbsp;册
+        </el-button>
+      </div>
     </div>
     <div class="login-copyright">copyright ©2019 九零E淘</div>
   </div>
@@ -83,6 +69,7 @@
 <script type="text/babel">
   import {Message} from 'element-ui'
   import md5 from 'js-md5'
+  const userreg = /^\d{7,11}$/
 
   export default {
     name: 'Login',
@@ -92,31 +79,15 @@
         loginForm: {
           loginaccount: null
         },
-        loginRules: {
-          loginaccount: [
-            {required: true, message: '登录用户账号不能为空', trigger: 'blur'},
-            {type: 'number', message: '登录用户账号必须为数字值', trigger: 'blur'},
-            {pattern: /^\d{7,11}$/, message: '登录用户账号长度在7到11个数字', trigger: 'blur'}
-          ]
-        },
         regForm: {
           regaccount: null,
           inviteaccount: null
         },
-        regRules: {
-          regaccount: [
-            {required: true, message: '注册用户不能为空', trigger: 'blur'},
-            {type: 'number', message: '注册用户必须为数字值', trigger: 'blur'},
-            {pattern: /^\d{7,11}$/, message: '注册用户长度在7到11个数字', trigger: 'blur'}
-          ],
-          inviteaccount: [
-            {required: true, message: '邀请人账号不能为空', trigger: 'blur'},
-            {type: 'number', message: '邀请人账号必须为数字值', trigger: 'blur'},
-            {pattern: /^\d{7,11}$/, message: '邀请人账号长度在7到11个数字', trigger: 'blur'}
-          ]
-        },
         logining: false,
-        registering: false
+        registering: false,
+        loginerror: false,
+        regerror: false,
+        reginviteerror: false
       }
     },
     methods: {
@@ -154,13 +125,12 @@
         })
       },
       handleLogin () {
-        this.$refs.loginForm.validate(valid => {
-          if (valid) {
-            this.login()
-          } else {
-            return false
-          }
-        })
+        if (!userreg.test(this.loginForm.loginaccount)) {
+          this.loginerror = true
+        } else {
+          this.loginerror = false
+          this.login()
+        }
       },
       register () {
         this.registering = true
@@ -198,13 +168,16 @@
         })
       },
       handleRegister () {
-        this.$refs.regForm.validate(valid => {
-          if (valid) {
-            this.register()
-          } else {
-            return false
-          }
-        })
+        if (!userreg.test(this.regForm.regaccount)) {
+          this.regerror = true
+        } else if (!userreg.test(this.regForm.inviteaccount)) {
+          this.regerror = false
+          this.reginviteerror = true
+        } else {
+          this.regerror = false
+          this.reginviteerror = false
+          this.register()
+        }
       }
     }
   }
@@ -243,6 +216,13 @@
     margin: 0 5px;
     color: #409eff;
     border-bottom: 3px solid #409eff;
+  }
+  .login-validate-error {
+    font-size: 10px;
+    color: red;
+    height: 10px;
+    line-height: 10px;
+    padding: 5px;
   }
   .login-handle {
     height: 50px;
