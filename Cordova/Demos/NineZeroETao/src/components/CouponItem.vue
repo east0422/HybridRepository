@@ -16,8 +16,7 @@
         <button
           class="couponitem-copybtn"
           data-clipboard-action="copy"
-          :data-clipboard-text="couponitem.GoodsID"
-          @click="copyClicked">
+          :data-clipboard-text="couponitem.GoodsID">
           复制
         </button>
       </div>
@@ -25,9 +24,6 @@
   </div>
 </template>
 <script type="text/babel">
-  import Clipboard from 'clipboard'
-  import {Message} from 'element-ui'
-
   export default {
     name: 'CouponItem',
     data () {
@@ -43,32 +39,13 @@
           }
         }
       }
-    },
-    mounted () {
-      let clipboardBtn = new Clipboard('.couponitem-copybtn')
-      clipboardBtn.on('success', e => {
-        Message({
-          message: '复制成功',
-          type: 'success',
-          center: true,
-          duration: 2 * 1000
-        })
-      })
-      clipboardBtn.on('error', e => {
-        Message({
-          message: '复制失败',
-          type: 'error',
-          center: true,
-          duration: 2 * 1000
-        })
-      })
     }
   }
 </script>
 <style lang="scss" rel="stylesheet/scss">
   .couponitem-display {
     width: 100%;
-    height: 120px;
+    height: 150px;
     background-color: white;
     align-items: center;
     border-bottom: 2px dotted #D0D0D0;

@@ -16,8 +16,13 @@
         {{item.title}}
       </a>
     </div>
-    <pull-to :bottom-load-method="loadmore" v-loading="loading">
-      <coupon-item v-for="couponitem in couponlist" :key="couponitem.cid" :couponitem="couponitem">
+    <pull-to
+      :top-load-method="refresh"
+      :bottom-load-method="loadmore">
+      <coupon-item
+        v-for="couponitem in couponlist"
+        :key="couponitem.cid"
+        :couponitem="couponitem">
       </coupon-item>
     </pull-to>
   </div>
@@ -25,6 +30,9 @@
 <script type="text/babel">
   import PullTo from 'vue-pull-to'
   import CouponItem from '@/components/CouponItem'
+  import {Message} from 'element-ui'
+  import qs from 'qs'
+  import Clipboard from 'clipboard'
 
   export default {
     name: 'Coupon',
@@ -38,77 +46,105 @@
         couponlist: [],
         tabs: [{
           index: 0,
-          cid: '0',
+          cid: 0,
           title: '全部'
         }, {
           index: 1,
-          cid: '1',
+          cid: 1,
           title: '女装'
         }, {
           index: 2,
-          cid: '9',
+          cid: 9,
           title: '男装'
         }, {
           index: 3,
-          cid: '10',
+          cid: 10,
           title: '内衣'
         }, {
           index: 4,
-          cid: '2',
+          cid: 2,
           title: '母婴'
         }, {
           index: 5,
-          cid: '3',
+          cid: 3,
           title: '化妆品'
         }, {
           index: 6,
-          cid: '4',
+          cid: 4,
           title: '居家'
         }, {
           index: 7,
-          cid: '5',
+          cid: 5,
           title: '鞋包配饰'
         }, {
           index: 8,
-          cid: '6',
+          cid: 6,
           title: '美食'
         }, {
           index: 9,
-          cid: '7',
+          cid: 7,
           title: '文体车品'
         }, {
           index: 10,
-          cid: '8',
+          cid: 8,
           title: '数码家电'
         }],
-        activecid: '0',
-        pageNum: 1,
-        loading: false
+        activecid: 0,
+        pageNum: 1
       }
     },
     methods: {
       fetchCouponList (successCallback, errorCallback) {
-        this.loading = true
+        let key = this.couponname === null ? '' : this.couponname
         this.$axios({
           url: 'http://quan.9gola.cn/api/taobao.ashx',
           method: 'post',
-          data: 'method=getQuan&key=' + this.couponname + '&page=' + this.pageNum + '&cid=' + this.activecid
+          headers: {'content-type': 'application/x-www-form-urlencoded'},
+          data: qs.stringify({
+            method: 'getQuan',
+            key: key,
+            page: this.pageNum,
+            cid: this.activecid
+          })
         }).then((resp) => {
-          console.log('search coupon resp:', resp.data)
-          this.loading = false
           successCallback()
-          this.couponlist = []
+          let respData = resp.data
+          let msg = ''
+          if (respData.message === '') {
+            msg = '亲！已经到底了！！'
+          } else if (respData.message.count === 0) {
+            msg = '您好,暂时找不到符合您要求的数据！'
+            this.couponlist = []
+          }
+          if (msg !== '') {
+            Message({
+              message: msg,
+              type: 'warning',
+              center: true,
+              duration: 2 * 1000
+            })
+            return
+          }
+          if (this.pageNum === 1) {
+            this.couponlist = []
+          }
           this.$nextTick(() => {
-            let respData = resp.data
-            this.couponlist = respData.message
+            this.couponlist = this.couponlist.concat(respData.message)
           })
         }).catch(error => {
-          console.log('login error:', error)
-          this.loading = false
+          console.log('load coupon error:', error)
           errorCallback()
+          this.couponlist = []
         })
       },
-      loadmore (loaded) {
+      refresh (loaded) { // 下拉刷新
+        this.fetchCouponList(() => {
+          loaded('done')
+        }, () => {
+          loaded('fail')
+        })
+      },
+      loadmore (loaded) { // 上拉加载更多
         this.pageNum = this.pageNum + 1
         this.fetchCouponList(() => {
           loaded('done')
@@ -122,10 +158,35 @@
         this.fetchCouponList(() => {}, () => {})
       },
       tabChanged (item) {
+        this.pageNum = 1
         this.activecid = item.cid
         this.couponname = null
         this.fetchCouponList(() => {}, () => {})
       }
+    },
+    mounted () {
+      let clipboardBtn = new Clipboard('.couponitem-copybtn', {
+        text: (trigger) => {
+          // return 'https://detail.tmall.com/item.htm?id=' + trigger.dataset.clipboardText
+          return 'https://detail.tmall.com/item.htm?id=' + trigger.getAttribute('data-clipboard-text')
+        }
+      })
+      clipboardBtn.on('success', e => {
+        Message({
+          message: '复制成功',
+          type: 'success',
+          center: true,
+          duration: 2 * 1000
+        })
+      })
+      clipboardBtn.on('error', e => {
+        Message({
+          message: '复制失败',
+          type: 'error',
+          center: true,
+          duration: 2 * 1000
+        })
+      })
     }
   }
 </script>
@@ -170,6 +231,7 @@
     background-color: white;
     flex-flow: wrap; // auto line break
     border-bottom: 2px dotted #D0D0D0;
+    z-index: 333;
   }
   .coupon-tab {
     width: 80px;
