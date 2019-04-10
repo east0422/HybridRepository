@@ -5,7 +5,7 @@
         <el-input v-model="couponname" class="coupon-search-input" placeholder="请输入内容" clearable></el-input>
         <button class="coupon-search-btn" @click="searchClicked">搜索</button>
       </div>
-      <span class="coupon-tip">[每日4点更新5万款产品/页面上拉翻页]</span>
+      <span class="coupon-tip">{{userinfo.notice}}</span>
     </div>
     <div class="coupon-tabs">
       <a
@@ -33,6 +33,7 @@
   import {Message} from 'element-ui'
   import qs from 'qs'
   import Clipboard from 'clipboard'
+  import {mapState} from 'vuex'
 
   export default {
     name: 'Coupon',
@@ -93,6 +94,11 @@
         pageNum: 1
       }
     },
+    computed: {
+      ...mapState([
+        'userinfo'
+      ])
+    },
     methods: {
       fetchCouponList (successCallback, errorCallback) {
         let key = this.couponname === null ? '' : this.couponname
@@ -130,6 +136,9 @@
           }
           this.$nextTick(() => {
             this.couponlist = this.couponlist.concat(respData.message)
+            this.couponlist.sort((data1, data2) => { // 降序
+              return data2.Quan_price - data1.Quan_price
+            })
           })
         }).catch(error => {
           console.log('load coupon error:', error)

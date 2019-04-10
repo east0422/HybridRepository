@@ -53,6 +53,9 @@ select device -> Generic iOS Device
 change .plist -> Localization native development region -> (English -> China)
 change version and build version
 change Build Settings sign -> iOS Developer
+remove Resource images.xcassets error icon
+
+if distribute not sign try select Manuallly manage signing and select correct profile
 ```
 
 ## Notes

@@ -5,15 +5,12 @@
     <div><img class="couponitem-img" :src="couponitem.Pic"></div>
     <div class="vcontainer couponitem-infos">
       <span>{{couponitem.Title}}</span>
-      <div class="hcontainer couponitem-quan-container">
+      <div class="hcontainer couponitem-container">
         <span class="couponitem-freeship">省</span>
-        <span class="couponitem-red">¥</span>
-        <span class="couponitem-red">{{couponitem.Quan_price}}</span>
-        <span class="couponitem-red">券后:{{couponitem.Price}}</span>
-        |<span class="couponitem-blue">约省:{{couponitem.Return}}</span>
+        <span class="couponitem-red">优惠券:{{couponitem.Quan_price}} 券后价:{{couponitem.Price}}</span>
         |<span class="couponitem-purple">销量:{{couponitem.Sales_num}}</span>
       </div>
-      <div class="hcontainer couponitem-copys">
+      <div class="hcontainer couponitem-container">
         <span>商品ID:{{couponitem.GoodsID}}</span>
         <button @click="queryOffer(couponitem.GoodsID)">查询优惠</button>
       </div>
@@ -131,24 +128,16 @@
     color: white;
     background-color: #cc3333;
   }
-  .couponitem-quan-container {
-    justify-content: space-between;
+  .couponitem-container {
+    justify-content: space-around;
     align-items: center;
     font-size: 12px;
   }
   .couponitem-red {
     color: red;
   }
-  .couponitem-blue {
-    color: blue;
-  }
   .couponitem-purple {
     color: purple;
-  }
-  .couponitem-copys {
-    justify-content: space-around;
-    align-items: center;
-    font-size: 12px;
   }
   .couponitem-couponmsg {
     display: inline-block;
