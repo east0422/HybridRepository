@@ -25,7 +25,6 @@
       width="100%"
       :show-close="false"
       :modal="false"
-      :lock-scroll="true"
       center>
       <span>{{couponmsg}}</span>
       <span slot="footer">
@@ -150,10 +149,6 @@
     justify-content: space-around;
     align-items: center;
     font-size: 12px;
-  }
-  /** override */
-  .el-dialog__body {
-    padding: 5px 20px;
   }
   img[src=""], img:not([src]) {
     opacity: 0;
