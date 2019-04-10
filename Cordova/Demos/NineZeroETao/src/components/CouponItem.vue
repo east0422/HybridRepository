@@ -19,15 +19,15 @@
       </div>
     </div>
     <el-dialog
-      title="优惠查询"
+      title="优惠查询结果"
       :visible="couponItemDialogVisible"
-      top="0"
-      width="100%"
       :show-close="false"
       :modal="false"
+      append-to-body
+      fullscreen
       center>
-      <span>{{couponmsg}}</span>
-      <span slot="footer">
+      <textarea class="couponitem-couponmsg" v-model="couponmsg" disabled="disabled"></textarea>
+      <span slot="footer" class="hcontainer couponitem-dialog-footer">
         <el-button @click="couponItemDialogVisible = false">取 消</el-button>
         <el-button
           type="primary"
@@ -149,6 +149,20 @@
     justify-content: space-around;
     align-items: center;
     font-size: 12px;
+  }
+  .couponitem-couponmsg {
+    display: inline-block;
+    height: 260px;
+    width: 100%;
+    font-size: 14px;
+    color: black;
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 4px;
+    opacity: 1;
+  }
+  .couponitem-dialog-footer {
+    justify-content: space-around;
   }
   img[src=""], img:not([src]) {
     opacity: 0;
