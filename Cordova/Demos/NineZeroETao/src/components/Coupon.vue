@@ -165,12 +165,7 @@
       }
     },
     mounted () {
-      let clipboardBtn = new Clipboard('.couponitem-copybtn', {
-        text: (trigger) => {
-          // return 'https://detail.tmall.com/item.htm?id=' + trigger.dataset.clipboardText
-          return 'https://detail.tmall.com/item.htm?id=' + trigger.getAttribute('data-clipboard-text')
-        }
-      })
+      let clipboardBtn = new Clipboard('.couponitem-copybtn')
       clipboardBtn.on('success', e => {
         Message({
           message: '复制成功',
