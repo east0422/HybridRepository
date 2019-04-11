@@ -27,6 +27,7 @@
       <el-menu-item index="order">订单</el-menu-item>
       <el-menu-item index="balance">余额</el-menu-item>
       <el-menu-item index="tixian">提现</el-menu-item>
+      <el-menu-item index="help">帮助</el-menu-item>
     </el-submenu>
     <el-menu-item index="coupon" class="fill vcontainer tabbar-item tabbar-border-right">
       <template slot="title">
@@ -82,6 +83,10 @@
           case 'tixian':
             this.menuselected = true
             this.menutitle = '提现'
+            break
+          case 'help':
+            this.menuselected = true
+            this.menutitle = '帮助'
             break
           case 'coupon':
             this.menuselected = false

@@ -1,5 +1,7 @@
 <template>
-  <div class="fill vcontainer coupon-display">
+  <div class="fill vcontainer coupon-display"
+    v-loading="loading"
+    element-loading-text="正在加载中......">
     <div class="coupon-header vcontainer">
       <div class="hcontainer coupon-searchcontainer">
         <el-input v-model="couponname" class="coupon-search-input" placeholder="请输入内容" clearable></el-input>
@@ -91,7 +93,8 @@
           title: '数码家电'
         }],
         activecid: 0,
-        pageNum: 1
+        pageNum: 1,
+        loading: false
       }
     },
     computed: {
@@ -102,6 +105,7 @@
     methods: {
       fetchCouponList (successCallback, errorCallback) {
         let key = this.couponname === null ? '' : this.couponname
+        this.loading = true
         this.$axios({
           url: 'http://quan.9gola.cn/api/taobao.ashx',
           method: 'post',
@@ -113,6 +117,7 @@
             cid: this.activecid
           })
         }).then((resp) => {
+          this.loading = false
           successCallback()
           let respData = resp.data
           let msg = ''
@@ -142,6 +147,7 @@
           })
         }).catch(error => {
           console.log('load coupon error:', error)
+          this.loading = false
           errorCallback()
           this.couponlist = []
         })

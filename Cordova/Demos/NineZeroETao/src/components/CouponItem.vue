@@ -2,7 +2,7 @@
   <div class="couponitem-display hcontainer"
     v-loading="loading"
     element-loading-text="正在查询中......">
-    <div><img class="couponitem-img" :src="couponitem.Pic"></div>
+    <div><img class="couponitem-img" :src="couponImg"></div>
     <div class="vcontainer couponitem-infos">
       <span>{{couponitem.Title}}</span>
       <div class="hcontainer couponitem-container">
@@ -65,7 +65,14 @@
     computed: {
       ...mapState([
         'userinfo'
-      ])
+      ]),
+      couponImg () {
+        if (this.couponitem.Pic.indexOf('http') === -1) { // 没有前缀http
+          return 'https:' + this.couponitem.Pic
+        } else {
+          return this.couponitem.Pic
+        }
+      }
     },
     methods: {
       queryOffer (goodsid) { // 查询优惠

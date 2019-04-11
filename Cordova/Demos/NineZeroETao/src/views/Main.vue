@@ -64,6 +64,10 @@
             this.curcomponent = this.component.content
             this.$refs.content.queryByMsg('提现')
             break
+          case 'help':
+            this.curcomponent = this.component.content
+            this.$refs.content.queryByMsg('帮助')
+            break
           case 'coupon':
             this.curcomponent = this.component.coupon
             this.$refs.coupon.fetchCouponList(() => {}, () => {})
