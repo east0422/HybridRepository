@@ -15,7 +15,7 @@
         <button class="btn" @click="clearClicked">清空消息</button>
         <button class="btn"
           data-clipboard-action="copy"
-          :data-clipboard-text="msg"
+          :data-clipboard-text="copymsg"
           @click="copyClicked"
           ref="copy">
           复制
@@ -44,6 +44,7 @@
     data () {
       return {
         msg: '',
+        copymsg: '',
         ordernum: '',
         copyBtn: null,
         tip: ''
@@ -71,6 +72,7 @@
       clearClicked () {
         this.tip = ''
         this.msg = ''
+        this.copymsg = ''
         this.ordernum = ''
       },
       fanliClicked () {
@@ -146,19 +148,23 @@
               case 8:
                 this.tip = respData.tip
                 this.msg = respData.msg
+                this.copymsg = respData.result.tkl
                 break
               default:
                 this.tip = ''
                 this.msg = respData.msg
+                this.copymsg = respData.msg
                 break
             }
           } else {
             this.tip = ''
             this.msg = '对不起，没有找到对应的数据!'
+            this.copymsg = '对不起，没有找到对应的数据!'
           }
         }).catch(error => {
           this.tip = ''
           this.msg = '对不起，查询出错！'
+          this.copymsg = '对不起，查询出错！'
           console.log('login error:', error)
         })
       }
