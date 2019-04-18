@@ -1,5 +1,5 @@
 <template>
-  <div class="fill vcontainer coupon-display"
+  <div class="fill vcontainer"
     v-loading="loading"
     element-loading-text="正在加载中......">
     <div class="coupon-header vcontainer">
@@ -7,7 +7,7 @@
         <el-input v-model="couponname" class="coupon-search-input" placeholder="请输入内容" clearable></el-input>
         <button class="coupon-search-btn" @click="searchClicked">搜索</button>
       </div>
-      <span class="coupon-tip">{{userinfo.notice}}</span>
+      <span class="coupon-tip">{{user.notice}}</span>
     </div>
     <div class="coupon-tabs">
       <a
@@ -33,9 +33,9 @@
   import PullTo from 'vue-pull-to'
   import CouponItem from '@/components/CouponItem'
   import {Message} from 'element-ui'
-  import qs from 'qs'
-  import Clipboard from 'clipboard'
   import {mapState} from 'vuex'
+  import api from '@/api'
+  import clipboard from '@/utils/clipboard'
 
   export default {
     name: 'Coupon',
@@ -99,24 +99,14 @@
     },
     computed: {
       ...mapState([
-        'userinfo'
+        'user'
       ])
     },
     methods: {
       fetchCouponList (successCallback, errorCallback) {
         let key = this.couponname === null ? '' : this.couponname
         this.loading = true
-        this.$axios({
-          url: 'http://quan.9gola.cn/api/taobao.ashx',
-          method: 'post',
-          headers: {'content-type': 'application/x-www-form-urlencoded'},
-          data: qs.stringify({
-            method: 'getQuan',
-            key: key,
-            page: this.pageNum,
-            cid: this.activecid
-          })
-        }).then((resp) => {
+        api.couponList(key, this.pageNum, this.activecid).then((resp) => {
           this.loading = false
           successCallback()
           let respData = resp.data
@@ -139,11 +129,9 @@
           if (this.pageNum === 1) {
             this.couponlist = []
           }
-          this.$nextTick(() => {
-            this.couponlist = this.couponlist.concat(respData.message)
-            this.couponlist.sort((data1, data2) => { // 降序
-              return data2.Quan_price - data1.Quan_price
-            })
+          this.couponlist = this.couponlist.concat(respData.message)
+          this.couponlist.sort((data1, data2) => { // 降序
+            return data2.Quan_price - data1.Quan_price
           })
         }).catch(error => {
           console.log('load coupon error:', error)
@@ -180,30 +168,12 @@
       }
     },
     mounted () {
-      let clipboardBtn = new Clipboard('.couponitem-copybtn')
-      clipboardBtn.on('success', e => {
-        Message({
-          message: '复制成功',
-          type: 'success',
-          center: true,
-          duration: 2 * 1000
-        })
-      })
-      clipboardBtn.on('error', e => {
-        Message({
-          message: '复制失败',
-          type: 'error',
-          center: true,
-          duration: 2 * 1000
-        })
-      })
+      clipboard.initWithClassName('.couponitem-copybtn')
+      this.fetchCouponList(() => {}, () => {})
     }
   }
 </script>
 <style lang="scss" rel="stylesheet/scss">
-  .coupon-display {
-    padding-bottom: 60px;
-  }
   .coupon-header {
     height: 130px;
     background: url(../images/coupon_tip_bg.png) no-repeat center/100% 100% #fb6125;

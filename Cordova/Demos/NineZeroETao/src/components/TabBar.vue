@@ -7,38 +7,24 @@
     menu-trigger="click"
     background-color="#ffffff"
     text-color="#000000"
-    active-text-color="#457A2C">
-    <el-menu-item index="home" class="fill vcontainer tabbar-item tabbar-border-right">
-      <template slot="title">
-        <i class="el-icon-view"></i>
-        <span class="tabbar-item-title">首页</span>
-      </template>
-    </el-menu-item>
-    <el-submenu index="menu" :show-timeout="0" :hide-timeout="0"
-      class="fill hcontainer tabbar-item tabbar-border-right">
-      <template slot="title">
-        <div class="vcontainer tabbar-item" :style="{color: menuselected ? '#457A2C' : '#909399'}">
-          <i class="el-icon-menu"></i>
-          <span class="tabbar-item-title">{{menutitle}}</span>
-        </div>
-      </template>
-      <el-menu-item index="material">资料</el-menu-item>
-      <el-menu-item index="invite">邀请</el-menu-item>
-      <el-menu-item index="order">订单</el-menu-item>
-      <el-menu-item index="balance">余额</el-menu-item>
-      <el-menu-item index="tixian">提现</el-menu-item>
-      <el-menu-item index="help">帮助</el-menu-item>
-    </el-submenu>
+    active-text-color="#457A2C"
+    v-show="showtab">
     <el-menu-item index="coupon" class="fill vcontainer tabbar-item tabbar-border-right">
       <template slot="title">
         <i class="el-icon-goods"></i>
         <span class="tabbar-item-title">优惠券</span>
       </template>
     </el-menu-item>
-    <el-menu-item index="customerservice" class="fill vcontainer tabbar-item">
+    <el-menu-item index="search" class="fill vcontainer tabbar-item tabbar-border-right">
       <template slot="title">
-        <i class="el-icon-service"></i>
-        <span class="tabbar-item-title">客服中心</span>
+        <i class="el-icon-search"></i>
+        <span class="tabbar-item-title">查询</span>
+      </template>
+    </el-menu-item>
+    <el-menu-item index="mine" class="fill vcontainer tabbar-item">
+      <template slot="title">
+        <i class="el-icon-setting"></i>
+        <span class="tabbar-item-title">个人中心</span>
       </template>
     </el-menu-item>
   </el-menu>
@@ -46,59 +32,42 @@
 
 <script type="text/babel">
   export default {
-    name: 'App',
+    name: 'Tabbar',
     data () {
       return {
-        activeIndex: 'home',
-        menutitle: '菜单',
-        menuselected: false
+        activeIndex: 'coupon'
+      }
+    },
+    computed: {
+      showtab () {
+        return this.activeIndex === 'coupon' || this.activeIndex === 'search' || this.activeIndex === 'mine'
+      }
+    },
+    watch: {
+      '$route': function () {
+        if (this.$route.name === 'coupon' || this.$route.name === 'search' || this.$route.name === 'mine') {
+          this.activeIndex = this.$route.name
+        } else {
+          this.activeIndex = ''
+        }
       }
     },
     methods: {
       handleSelect (key, keyPath) {
+        this.activeIndex = key
         switch (key) {
-          case 'home':
-            this.menuselected = false
-            break
-          case 'menu':
-            this.menuselected = true
-            this.menutitle = '菜单'
-            break
-          case 'material':
-            this.menuselected = true
-            this.menutitle = '资料'
-            break
-          case 'invite':
-            this.menuselected = true
-            this.menutitle = '邀请'
-            break
-          case 'order':
-            this.menuselected = true
-            this.menutitle = '订单'
-            break
-          case 'balance':
-            this.menuselected = true
-            this.menutitle = '余额'
-            break
-          case 'tixian':
-            this.menuselected = true
-            this.menutitle = '提现'
-            break
-          case 'help':
-            this.menuselected = true
-            this.menutitle = '帮助'
-            break
           case 'coupon':
-            this.menuselected = false
+            this.$router.push({name: 'coupon'})
             break
-          case 'customerservice':
-            this.menuselected = false
+          case 'search':
+            this.$router.push({name: 'search'})
+            break
+          case 'mine':
+            this.$router.push({name: 'mine'})
             break
           default:
-            this.menuselected = false
             break
         }
-        this.$emit('tabchanged', key)
       }
     }
   }
@@ -107,7 +76,7 @@
 <style lang="scss" rel="stylesheet/scss">
   .tabbar-display {
     position: fixed;
-    width: 100%;
+    width: 100% !important;
     height: 60px;
     bottom: 0;
     left: 0;
@@ -127,15 +96,5 @@
   .tabbar-item-title {
     height: 30px;
     line-height: 30px;
-  }
-  /* override */
-  .el-submenu__title {
-    width: 100%;
-  }
-  .el-submenu__title i {
-    color: inherit;
-  }
-  .el-menu--popup {
-    min-width: 100px;
   }
 </style>

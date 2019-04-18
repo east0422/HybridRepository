@@ -1,11 +1,13 @@
 <template>
-  <div class="fill vcontainer customerservice-display">
-    <div class="fill customerservice-img" :style="{backgroundImage: 'url(' + userinfo.gzh_img + ')'}"></div>
-    <span class="customerservice-msg">{{userinfo.gzh}}</span>
+  <div class="fill vcontainer">
+    <mine-header title="客服中心"></mine-header>
+    <div class="fill customerservice-img" :style="{backgroundImage: 'url(' + user.gzh_img + ')'}"></div>
+    <span class="customerservice-msg">{{user.gzh}}</span>
   </div>
 </template>
 <script type="text/babel">
   import {mapState} from 'vuex'
+  import mineHeader from '@/components/MineHeader'
 
   export default {
     name: 'CustomerService',
@@ -13,17 +15,17 @@
       return {
       }
     },
+    components: {
+      mineHeader
+    },
     computed: {
       ...mapState([
-        'userinfo'
+        'user'
       ])
     }
   }
 </script>
 <style lang="scss" rel="stylesheet/scss">
-  .customerservice-display {
-    padding-bottom: 60px;
-  }
   .customerservice-img {
     background-repeat: no-repeat;
     background-position: center;

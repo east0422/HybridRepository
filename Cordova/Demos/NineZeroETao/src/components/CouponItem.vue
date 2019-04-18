@@ -39,9 +39,8 @@
   </div>
 </template>
 <script type="text/babel">
-  import md5 from 'js-md5'
-  import {mapState} from 'vuex'
   import {Message} from 'element-ui'
+  import api from '@/api'
 
   export default {
     name: 'CouponItem',
@@ -63,9 +62,6 @@
       }
     },
     computed: {
-      ...mapState([
-        'userinfo'
-      ]),
       couponImg () {
         if (this.couponitem.Pic.indexOf('http') === -1) { // 没有前缀http
           return 'https:' + this.couponitem.Pic
@@ -77,18 +73,7 @@
     methods: {
       queryOffer (goodsid) { // 查询优惠
         this.loading = true
-        this.$axios({
-          url: '',
-          method: 'post',
-          data: {
-            'type': 'query',
-            'msg': window.encodeURI('https://detail.tmall.com/item.htm?id=' + goodsid),
-            'user': this.userinfo.user,
-            'inviter': this.userinfo.inviter,
-            'url': this.userinfo.url,
-            'sign': md5('xxs' + this.userinfo.user + 'xxs')
-          }
-        }).then((resp) => {
+        api.searchMsg('https://detail.tmall.com/item.htm?id=' + goodsid).then((resp) => {
           this.loading = false
           this.couponmsg = resp.data ? resp.data.msg : '对不起，没有找到对应的数据!'
           this.couponItemDialogVisible = true
@@ -96,7 +81,7 @@
           this.loading = false
           this.couponItemDialogVisible = false
           this.couponmsg = ''
-          console.log('login error:', error)
+          console.log('couponitem search error:', error)
           Message({
             message: '对不起，查询出错！',
             type: 'error',

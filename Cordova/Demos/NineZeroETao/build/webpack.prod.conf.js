@@ -37,7 +37,7 @@ let webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: config.build.index,
       template: 'index.html.ejs',
-      api_server: config.build.env.API_SERVER,
+      api_server: config.build.env.BASE_API,
       framework: {
         cordova: !!config.build.cordova,
       },

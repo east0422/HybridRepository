@@ -62,13 +62,12 @@
         </el-button>
       </div>
     </div>
-    <div class="login-copyright">copyright ©2019 九零E淘</div>
   </div>
 </template>
 
 <script type="text/babel">
   import {Message} from 'element-ui'
-  import md5 from 'js-md5'
+  import api from '@/api'
   const userreg = /^\d{7,11}$/
 
   export default {
@@ -93,15 +92,7 @@
     methods: {
       login () { // 登录请求
         this.logining = true
-        this.$axios({
-          url: '',
-          method: 'post',
-          data: {
-            'type': 'login',
-            'user': this.loginForm.loginaccount,
-            'sign': md5('xxs' + this.loginForm.loginaccount + 'xxs')
-          }
-        }).then((resp) => {
+        api.login(this.loginForm.loginaccount).then((resp) => {
           this.logining = false
           let respData = resp.data
           if (!respData.login) { // 登录失败
@@ -111,8 +102,8 @@
               duration: 3 * 1000
             })
           } else {
-            this.$store.commit('setUserinfo', respData.data)
-            this.$router.push({name: 'main'})
+            this.$store.commit('setUser', respData.data)
+            this.$router.push({name: 'coupon'})
           }
         }).catch(error => {
           console.log('login error:', error)
@@ -134,16 +125,7 @@
       },
       register () {
         this.registering = true
-        this.$axios({
-          url: '',
-          method: 'post',
-          data: {
-            'type': 'reg',
-            'user': this.regForm.regaccount,
-            'inviter': this.regForm.inviteaccount,
-            'sign': md5('xxs' + this.regForm.regaccount + 'xxs')
-          }
-        }).then((resp) => {
+        api.register(this.regForm.regaccount, this.regForm.inviteaccount).then((resp) => {
           this.registering = false
           let respData = resp.data
           if (!respData.login) { // 注册失败
@@ -153,8 +135,8 @@
               duration: 3 * 1000
             })
           } else {
-            this.$store.commit('setUserinfo', respData.data)
-            this.$router.push({name: 'main'})
+            this.$store.commit('setUser', respData.data)
+            this.$router.push({name: 'coupon'})
           }
         }).catch(error => {
           console.log('register error:', error)
@@ -232,11 +214,6 @@
     background-color: #80CE6B;
     border-color: #80CE6B;
     border-radius: 10px;
-  }
-  .login-copyright {
-    text-align: center;
-    font-size: 14px;
-    color: #ffffff;
   }
   .el-icon-login-account {
     background: url(../images/account.png) no-repeat center;

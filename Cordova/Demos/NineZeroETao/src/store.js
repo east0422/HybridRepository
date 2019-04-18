@@ -1,21 +1,27 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {getUserInfo, setUserInfo} from '@/storages.js'
 
 Vue.use(Vuex)
 
+const UserKey = 'NineZeroETao-User'
+const storage = window.localStorage
+
+export function getUser () {
+  let user = storage.getItem(UserKey)
+  if (user) {
+    return JSON.parse(user)
+  }
+  return {}
+}
+
 const store = new Vuex.Store({
   state: {
-    userinfo: getUserInfo(),
-    bottomhidden: false
+    user: getUser()
   },
   mutations: {
-    setUserinfo (state, _userinfo) {
-      state.userinfo = _userinfo
-      setUserInfo(_userinfo)
-    },
-    setBottomHidden (state, _bottomhidden) {
-      state.bottomhidden = _bottomhidden
+    setUser (state, _user) {
+      state.user = _user
+      storage.setItem(UserKey, JSON.stringify(_user))
     }
   }
 })
