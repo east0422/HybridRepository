@@ -2,33 +2,22 @@
   <div class="fill vcontainer search-display"
     v-loading="searching"
     element-loading-text="正在查询中......">
-    <el-radio-group v-model="searchtype" class="search-radio-type">
-      <el-radio :label="1">返利查询</el-radio>
-      <el-radio :label="2">订单查询</el-radio>
-    </el-radio-group>
-    <div class="hcontainer search-container">
+    <div class="hcontainer">
       <el-input
         type="textarea"
-        :autosize="{minRows: 3, maxRows: 8}"
-        :placeholder="searchholder"
+        placeholder="请输入商品信息或订单号"
+        clearable
         v-model="searchmsg">
       </el-input>
-      <div class="vcontainer">
-        <button class="search-btn" @click="searchClicked">查询</button>
-        <button class="search-btn" @click="searchmsg=''">清空</button>
-      </div>
+      <button class="search-btn" @click="searchClicked">查询</button>
     </div>
-    <div class="hcontainer search-result-container">
-      <textarea class="search-result" v-model="searchresult" disabled="disabled"></textarea>
-      <div>
-        <button
-          class="search-btn search-copybtn"
-          data-clipboard-action="copy"
-          :data-clipboard-text="copymsg">
-          复制
-        </button>
-      </div>
-    </div>
+    <textarea class="search-result" v-model="searchresult" disabled="disabled"></textarea>
+    <button
+      class="search-copybtn"
+      data-clipboard-action="copy"
+      :data-clipboard-text="copymsg">
+      复制内容
+    </button>
     <span class="search-result-tip">{{tip}}</span>
   </div>
 </template>
@@ -41,21 +30,11 @@
     name: 'Search',
     data () {
       return {
-        searchtype: 1,
         searchmsg: '',
         searchresult: '',
         copymsg: '',
         tip: '',
         searching: false
-      }
-    },
-    computed: {
-      searchholder () {
-        if (this.searchtype === 1) {
-          return '请输入您要查询的返利信息'
-        } else {
-          return '请输入您要查询的订单号'
-        }
       }
     },
     methods: {
@@ -110,46 +89,36 @@
 </script>
 <style lang="scss" rel="stylesheet/scss">
   .search-display {
-    padding: 10px;
+    padding: 20px 10px;
   }
-  .search-radio-type {
-    text-align: center;
-    padding-top: 20px;
-    padding-bottom: 10px;
-  }
-  .search-container {
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-  }
-  .search-result-container {
-    justify-content: space-between;
-    align-items: center;
+  .search-btn {
+    width: 70px;
+    color: white;
+    background-color: #ff4400;
+    font-size: 14px;
+    border: none;
   }
   .search-result {
     height: 170px;
-    width: 100%;
+    width: 80%;
     font-size: 14px;
     color: black;
-    background-color: white;
-    border-radius: 4px;
+    border: none;
+    margin: 10px auto;
+  }
+  .search-copybtn {
+    width: 150px;
+    height: 40px;
+    font-size: 18px;
+    color: black;
+    margin: 0 auto;
     border: none;
   }
-  .search-btn {
-    height: 30px;
-    line-height: 30px;
-    width: 70px;
-    color: white;
-    background-color: #457A2C;
-    font-size: 14px;
-    border-radius: 5px;
-    margin: 10px;
-    margin-right: 0;
-  }
   .search-result-tip {
-    width: 100%;
+    width: 80%;
     font-size: 12px;
     color: red;
     margin-top: 10px;
+    margin-left: 10%;
   }
 </style>
