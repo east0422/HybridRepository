@@ -17,7 +17,7 @@ router.beforeEach((to, from, next) => {
     if (notLogin) {
       next()
     } else {
-      next({name: 'coupon'})
+      next({name: 'search'})
     }
   } else {
     if (notLogin) {

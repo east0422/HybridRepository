@@ -103,7 +103,7 @@
             })
           } else {
             this.$store.commit('setUser', respData.data)
-            this.$router.push({name: 'coupon'})
+            this.$router.push({name: 'search'})
           }
         }).catch(error => {
           console.log('login error:', error)
@@ -136,7 +136,7 @@
             })
           } else {
             this.$store.commit('setUser', respData.data)
-            this.$router.push({name: 'coupon'})
+            this.$router.push({name: 'search'})
           }
         }).catch(error => {
           console.log('register error:', error)

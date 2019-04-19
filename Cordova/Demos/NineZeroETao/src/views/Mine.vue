@@ -1,12 +1,13 @@
 <template>
   <div class="fill vcontainer mine-display">
-    <div class="hcontainer mine-dividing">
+    <div class="hcontainer">
       <div class="mine-avatar"><img src="../images/avatar.png"></div>
       <div class="vcontainer mine-infos">
         <span>{{user.user}}</span>
         <span>{{user.name}}</span>
       </div>
     </div>
+    <div class="search-blank"></div>
     <div
       v-for="(item, index) in mineList"
       :key="index"
@@ -93,8 +94,9 @@
 <style lang="scss" rel="stylesheet/scss">
   .mine-display {
     padding: 10px;
-    font-size: 18px;
+    font-size: 16px;
     color: #606060;
+    margin-top: 10%;
   }
   .mine-avatar {
     height: 70px;
@@ -106,12 +108,17 @@
     justify-content: space-around;
     padding: 10px;
   }
+  .search-blank {
+    height: 5%;
+    border-top: 2px solid #f1f1f3;
+    border-bottom: 2px solid #f1f1f3;
+  }
   .mine-dividing {
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid #f1f1f3;
   }
   .mine-item {
-    height: 50px;
-    line-height: 50px;
+    height: 40px;
+    line-height: 40px;
     margin: 0 10px;
     justify-content: space-between;
     align-items: center;

@@ -30,7 +30,7 @@
     height: 100%;
     width: 100%;
     margin: 0;
-    background-color: #f1f1f3;
+    background-color: white;
   }
   .fill {
     flex: 1;

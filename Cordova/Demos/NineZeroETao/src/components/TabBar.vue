@@ -5,20 +5,20 @@
     mode="horizontal"
     @select="handleSelect"
     menu-trigger="click"
-    background-color="#ffffff"
+    background-color="#f1f1f3"
     text-color="#000000"
     active-text-color="#457A2C"
     v-show="showtab">
-    <el-menu-item index="coupon" class="fill vcontainer tabbar-item tabbar-border-right">
-      <template slot="title">
-        <i class="el-icon-goods"></i>
-        <span class="tabbar-item-title">优惠券</span>
-      </template>
-    </el-menu-item>
-    <el-menu-item index="search" class="fill vcontainer tabbar-item tabbar-border-right">
+    <el-menu-item index="search" class="fill vcontainer tabbar-item">
       <template slot="title">
         <i class="el-icon-search"></i>
         <span class="tabbar-item-title">查询</span>
+      </template>
+    </el-menu-item>
+    <el-menu-item index="coupon" class="fill vcontainer tabbar-item">
+      <template slot="title">
+        <i class="el-icon-goods"></i>
+        <span class="tabbar-item-title">优惠券</span>
       </template>
     </el-menu-item>
     <el-menu-item index="mine" class="fill vcontainer tabbar-item">
@@ -35,17 +35,17 @@
     name: 'Tabbar',
     data () {
       return {
-        activeIndex: 'coupon'
+        activeIndex: 'search'
       }
     },
     computed: {
       showtab () {
-        return this.activeIndex === 'coupon' || this.activeIndex === 'search' || this.activeIndex === 'mine'
+        return this.activeIndex === 'search' || this.activeIndex === 'coupon' || this.activeIndex === 'mine'
       }
     },
     watch: {
       '$route': function () {
-        if (this.$route.name === 'coupon' || this.$route.name === 'search' || this.$route.name === 'mine') {
+        if (this.$route.name === 'search' || this.$route.name === 'coupon' || this.$route.name === 'mine') {
           this.activeIndex = this.$route.name
         } else {
           this.activeIndex = ''
@@ -56,11 +56,11 @@
       handleSelect (key, keyPath) {
         this.activeIndex = key
         switch (key) {
-          case 'coupon':
-            this.$router.push({name: 'coupon'})
-            break
           case 'search':
             this.$router.push({name: 'search'})
+            break
+          case 'coupon':
+            this.$router.push({name: 'coupon'})
             break
           case 'mine':
             this.$router.push({name: 'mine'})
@@ -89,9 +89,6 @@
     justify-content: center;
     align-items: center;
     padding: 0px !important;
-  }
-  .tabbar-border-right {
-    border-right: 2px solid lightgray;
   }
   .tabbar-item-title {
     height: 30px;

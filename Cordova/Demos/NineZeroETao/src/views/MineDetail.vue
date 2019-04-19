@@ -89,7 +89,7 @@
     border-radius: 4px;
     border: none;
     margin: 20px 0;
-    background-color: white;
+    background-color: #f3f1f1;
     opacity: 1;
   }
   .minedetail-copybtn {
@@ -100,11 +100,12 @@
     background-color: #457A2C;
     font-size: 18px;
     border-radius: 5px;
+    border: none;
     margin: 0 auto;
   }
   .minedetail-tip {
     width: 100%;
-    font-size: 12px;
+    font-size: 14px;
     color: red;
     margin-top: 10px;
   }

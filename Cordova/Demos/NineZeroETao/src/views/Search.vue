@@ -4,21 +4,23 @@
     element-loading-text="正在查询中......">
     <div class="hcontainer">
       <el-input
-        type="textarea"
         placeholder="请输入商品信息或订单号"
+        prefix-icon="el-icon-search"
         clearable
         v-model="searchmsg">
       </el-input>
       <button class="search-btn" @click="searchClicked">查询</button>
     </div>
-    <textarea class="search-result" v-model="searchresult" disabled="disabled"></textarea>
-    <button
-      class="search-copybtn"
-      data-clipboard-action="copy"
-      :data-clipboard-text="copymsg">
-      复制内容
-    </button>
-    <span class="search-result-tip">{{tip}}</span>
+    <div class="vcontainer fill" v-show="showresult">
+      <textarea class="search-result" v-model="searchresult" disabled="disabled"></textarea>
+      <button
+        class="search-copybtn"
+        data-clipboard-action="copy"
+        :data-clipboard-text="copymsg">
+        复制内容
+      </button>
+      <span class="search-result-tip">{{tip}}</span>
+    </div>
   </div>
 </template>
 <script type="text/babel">
@@ -34,7 +36,8 @@
         searchresult: '',
         copymsg: '',
         tip: '',
-        searching: false
+        searching: false,
+        showresult: false
       }
     },
     methods: {
@@ -52,6 +55,8 @@
         this.searching = true
         api.searchMsg(this.searchmsg).then((resp) => {
           this.searching = false
+          this.showresult = true
+          this.searchmsg = ''
           let respData = resp.data
           if (respData) {
             switch (parseInt(respData.type)) {
@@ -75,6 +80,8 @@
           }
         }).catch(error => {
           this.searching = false
+          this.showresult = true
+          this.searchmsg = ''
           this.tip = ''
           this.searchresult = '对不起，查询出错！'
           this.copymsg = '对不起，查询出错！'
@@ -90,27 +97,29 @@
 <style lang="scss" rel="stylesheet/scss">
   .search-display {
     padding: 20px 10px;
+    margin-top: 20%;
   }
   .search-btn {
-    width: 70px;
+    width: 80px;
     color: white;
     background-color: #ff4400;
     font-size: 14px;
     border: none;
   }
   .search-result {
-    height: 170px;
+    height: 50%;
     width: 80%;
-    font-size: 14px;
+    font-size: 16px;
     color: black;
-    border: none;
+    border: 2px dotted #ff4400;
     margin: 10px auto;
   }
   .search-copybtn {
     width: 150px;
     height: 40px;
     font-size: 18px;
-    color: black;
+    color: white;
+    background-color: #ff4400;
     margin: 0 auto;
     border: none;
   }

@@ -12,13 +12,13 @@ let routes = [
     name: 'login',
     component: resolve => require(['@/views/Login'], resolve)
   }, {
-    path: '/coupon',
-    name: 'coupon',
-    component: resolve => require(['@/views/Coupon'], resolve)
-  }, {
     path: '/search',
     name: 'search',
     component: resolve => require(['@/views/Search'], resolve)
+  }, {
+    path: '/coupon',
+    name: 'coupon',
+    component: resolve => require(['@/views/Coupon'], resolve)
   }, {
     path: '/mine',
     name: 'mine',
