@@ -1,8 +1,12 @@
 <template>
-  <div class="fill vcontainer search-display"
+  <div class="fill vcontainer"
     v-loading="searching"
     element-loading-text="正在查询中......">
-    <div class="hcontainer">
+    <div class="vcontainer search-header">
+      <span style="text-align: left;">{{welcome}}</span>
+      <span style="text-align: right;">九零e淘</span>
+    </div>
+    <div class="hcontainer search-container">
       <el-input
         placeholder="请输入商品信息或订单号"
         prefix-icon="el-icon-search"
@@ -21,12 +25,14 @@
       </button>
       <span class="search-result-tip">{{tip}}</span>
     </div>
+    <div v-show="!showresult" class="fill search-result-none"></div>
   </div>
 </template>
 <script type="text/babel">
   import clipboard from '@/utils/clipboard'
   import api from '@/api'
   import {Message} from 'element-ui'
+  import {mapState} from 'vuex'
 
   export default {
     name: 'Search',
@@ -40,6 +46,11 @@
         showresult: false
       }
     },
+    computed: mapState({
+      welcome (state) {
+        return '欢迎登录，' + state.user.user
+      }
+    }),
     methods: {
       searchClicked () {
         if (!this.searchmsg) {
@@ -95,9 +106,17 @@
   }
 </script>
 <style lang="scss" rel="stylesheet/scss">
-  .search-display {
-    padding: 20px 10px;
-    margin-top: 20%;
+  .search-header {
+    height: 40px;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    background-color: green;
+    padding: 5px 10px;
+  }
+  .search-container {
+    padding: 0 10px;
+    margin-top: 15%;
   }
   .search-btn {
     width: 80px;
@@ -129,5 +148,9 @@
     color: red;
     margin-top: 10px;
     margin-left: 10%;
+  }
+  .search-result-none {
+    background: url(../images/search_bg.png) no-repeat center;
+    background-size: contain;
   }
 </style>

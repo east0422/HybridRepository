@@ -7,65 +7,84 @@
         <span>{{user.name}}</span>
       </div>
     </div>
-    <div class="search-blank"></div>
-    <div
-      v-for="(item, index) in mineList"
-      :key="index"
-      class="hcontainer mine-item mine-dividing"
-      @click="itemClicked(item)">
-      <span>{{item.title}}</span>
-      <i class="el-icon-arrow-right"></i>
+    <div class="mine-blank"></div>
+    <mine-item
+      v-for="item in mineItems"
+      :key="item.name"
+      :item="item"
+      :showdividing="item.showdividing"
+      :showblank="item.showblank"
+      @itemclick="itemClicked">
+    </mine-item>
+    <div class="fill vcontainer mine-btn-container">
+      <button class="mine-logout-btn" @click="logoutClicked">退出登录</button>
     </div>
-    <button class="mine-logout-btn" @click="logoutClicked">退出登录</button>
   </div>
 </template>
 <script type="text/babel">
   import {mapState} from 'vuex'
+  import mineItem from '@/components/MineItem'
 
   export default {
     name: 'Mine',
     data () {
       return {
-        mineList: [{
+        mineItems: [{
           msg: '资料',
           name: 'material',
           type: 'query',
-          title: '个人资料'
+          title: '个人资料',
+          showdividing: false,
+          showblank: false
         }, {
           msg: '邀请',
           name: 'invite',
           type: 'query',
-          title: '邀请列表'
+          title: '邀请列表',
+          showdividing: true,
+          showblank: false
         }, {
           msg: '余额',
           name: 'balance',
           type: 'query',
-          title: '余额信息'
+          title: '余额信息',
+          showdividing: true,
+          showblank: false
         }, {
           msg: '订单',
           name: 'order',
           type: 'query',
-          title: '我的订单'
+          title: '我的订单',
+          showdividing: true,
+          showblank: false
         }, {
           msg: '提现',
           name: 'tixian',
           type: 'query',
-          title: '我要提现'
-        }, {
-          msg: '客服中心',
-          name: 'customerservice',
-          type: 'display',
-          title: '客服中心'
+          title: '我要提现',
+          showdividing: true,
+          showblank: true
         }, {
           msg: '新人引导',
           name: 'noviceguide',
           type: 'guide',
-          title: '新人引导'
+          title: '新人引导',
+          showdividing: false,
+          showblank: false
         }, {
           msg: '邀请引导',
           name: 'inviteguide',
           type: 'guide',
-          title: '邀请引导'
+          title: '邀请引导',
+          showdividing: true,
+          showblank: true
+        }, {
+          msg: '客服中心',
+          name: 'customerservice',
+          type: 'display',
+          title: '客服中心',
+          showdividing: false,
+          showblank: true
         }]
       }
     },
@@ -73,6 +92,9 @@
       ...mapState([
         'user'
       ])
+    },
+    components: {
+      mineItem
     },
     methods: {
       itemClicked (item) {
@@ -93,10 +115,9 @@
 </script>
 <style lang="scss" rel="stylesheet/scss">
   .mine-display {
-    padding: 10px;
     font-size: 16px;
     color: #606060;
-    margin-top: 10%;
+    margin-top: 10px;
   }
   .mine-avatar {
     height: 70px;
@@ -108,28 +129,21 @@
     justify-content: space-around;
     padding: 10px;
   }
-  .search-blank {
-    height: 5%;
-    border-top: 2px solid #f1f1f3;
-    border-bottom: 2px solid #f1f1f3;
+  .mine-blank {
+    height: 10px;
+    background-color: #f3f1f1;
   }
-  .mine-dividing {
-    border-bottom: 2px solid #f1f1f3;
-  }
-  .mine-item {
-    height: 40px;
-    line-height: 40px;
-    margin: 0 10px;
-    justify-content: space-between;
+  .mine-btn-container {
     align-items: center;
+    justify-content: center;
   }
   .mine-logout-btn {
     width: 70%;
     color: white;
     background-color: red;
     font-size: 20px;
-    margin: 10px auto;
     height: 50px;
+    line-height: 50px;
     border: none;
     border-radius: 10px;
   }

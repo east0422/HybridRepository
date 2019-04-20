@@ -152,9 +152,9 @@
       handleRegister () {
         if (!userreg.test(this.regForm.regaccount)) {
           this.regerror = true
-        } else if (!userreg.test(this.regForm.inviteaccount)) {
-          this.regerror = false
-          this.reginviteerror = true
+        // } else if (!userreg.test(this.regForm.inviteaccount)) {
+        //   this.regerror = false
+        //   this.reginviteerror = true
         } else {
           this.regerror = false
           this.reginviteerror = false
