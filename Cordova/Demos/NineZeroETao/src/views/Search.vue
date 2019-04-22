@@ -17,12 +17,17 @@
     </div>
     <div class="vcontainer fill" v-show="showresult">
       <textarea class="search-result" v-model="searchresult" disabled="disabled"></textarea>
-      <button
-        class="search-copybtn"
-        data-clipboard-action="copy"
-        :data-clipboard-text="copymsg">
-        复制内容
-      </button>
+      <div class="hcontainer search-btns">
+        <button
+          class="search-copybtn"
+          data-clipboard-action="copy"
+          :data-clipboard-text="copymsg">
+          复制内容
+        </button>
+        <button class="search-clearbtn" @click="searchresult=''">
+          清空内容
+        </button>
+      </div>
       <span class="search-result-tip">{{tip}}</span>
     </div>
     <div v-show="!showresult" class="fill search-result-none"></div>
@@ -132,14 +137,25 @@
     color: black;
     border: 2px dotted #ff4400;
     margin: 10px auto;
+    opacity: 1;
+  }
+  .search-btns {
+    height: 40px;
+    margin: 0 auto;
   }
   .search-copybtn {
-    width: 150px;
-    height: 40px;
-    font-size: 18px;
+    width: 110px;
     color: white;
+    font-size: 18px;
     background-color: #ff4400;
-    margin: 0 auto;
+    border: none;
+  }
+  .search-clearbtn {
+    width: 110px;
+    color: white;
+    font-size: 18px;
+    background-color: green;
+    margin-left: 30px;
     border: none;
   }
   .search-result-tip {

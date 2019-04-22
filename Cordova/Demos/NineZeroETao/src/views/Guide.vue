@@ -1,7 +1,7 @@
 <template>
   <div class="fill vcontainer">
     <mine-header :title="guidename"></mine-header>
-    <iframe frameborder="no" class="guide-iframe" :src="iframSrc"></iframe>
+    <iframe frameborder="no" scrolling="no" class="guide-iframe" :src="iframSrc"></iframe>
   </div>
 </template>
 <script type="text/babel">
@@ -26,9 +26,9 @@
       iframSrc () {
         let prefixUrl = ''
         if (this.guidename === '新人引导') {
-          prefixUrl = 'http://help.9gola.cn/fl/'
+          prefixUrl = 'http://step.9gola.cn/help/fl/app/'
         } else if (this.guidename === '邀请引导') {
-          prefixUrl = 'http://inviter.9gola.cn/fl/'
+          prefixUrl = 'http://step.9gola.cn/inviter/app/'
         }
         return prefixUrl + '?noCache=' + new Date().getTime()
       }
