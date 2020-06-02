@@ -1,0 +1,18 @@
+{
+  "name": "bluetoothpair",
+  "version": "0.0.1",
+  "types": "./types/index.d.ts",
+  "description": "Bluetooth pair or unpair and check isConnected",
+  "cordova": {
+    "id": "rinnegan-plugin-bluetoothpair",
+    "platforms": [
+      "android"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "",
+  "license": "ISC"
+}

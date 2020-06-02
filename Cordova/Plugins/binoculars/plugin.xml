@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="rinnegan-plugin-binoculars" version="0.0.1">
+  <name>BinocularsView</name>
+  <description>A webview and its screen copy.</description>
+  <js-module src="www/binoculars.js" name="Binoculars">
+    <clobbers target="Binoculars" />
+  </js-module>
+
+  <platform name="android">
+    <dependency id="cordova-support-kotlin" version="1.1.0" />
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="Binoculars">
+        <param name="android-package" value="com.luminagic.rinnegan.binoculars.Binoculars" />
+      </feature>
+    </config-file>
+    <source-file src="android/Binoculars.kt" target-dir="app/src/main/java/com/luminagic/rinnegan/binoculars" />
+    <source-file src="android/BinocularsView.kt" target-dir="app/src/main/java/com/luminagic/rinnegan/binoculars" />
+    <source-file src="android/BinocularsRenderer.kt" target-dir="app/src/main/java/com/luminagic/rinnegan/binoculars" />
+    <framework src="org.jetbrains.anko:anko-commons:0.10.8" />
+    <framework src="org.jetbrains.anko:anko-sdk25:0.10.8" />
+  </platform>
+</plugin>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="rinnegan-plugin-unlockscreen" version="0.0.1">
+  <name>UnlockScreen</name>
+  <description>Set auto unlock screen off and on</description>
+  <js-module src="www/unlockscreen.js" name="UnlockScreen">
+    <clobbers target="UnlockScreen" />
+  </js-module>
+
+  <platform name="android">
+    <dependency id="cordova-support-kotlin" version="1.1.0" />
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="UnlockScreen">
+        <param name="android-package" value="com.luminagic.rinnegan.unlockscreen.UnlockScreen" />
+      </feature>
+    </config-file>
+    <source-file src="android/UnlockScreen.kt" target-dir="app/src/main/java/com/luminagic/rinnegan/unlockscreen" />
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+      <uses-permission android:name="android.permission.WAKE_LOCK" />
+    </config-file>
+  </platform>
+</plugin>

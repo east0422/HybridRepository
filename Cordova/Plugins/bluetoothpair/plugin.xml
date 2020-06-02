@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="rinnegan-plugin-bluetoothpair" version="0.0.1">
+  <name>BluetoothPair</name>
+  <description>Bluetooth pair or unpair and check isConnected</description>
+  <js-module src="www/bluetoothPair.js" name="bluetoothPair">
+    <clobbers target="BluetoothPair" />
+  </js-module>
+
+  <platform name="android">
+    <dependency id="cordova-support-kotlin" version="1.1.0" />
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="BluetoothPair">
+        <param name="android-package" value="com.luminagic.rinnegan.bluetoothpair.BluetoothPair" />
+      </feature>
+    </config-file>
+    <source-file src="android/BluetoothPair.kt" target-dir="app/src/main/java/com/luminagic/rinnegan/bluetoothpair" />
+  </platform>
+</plugin>
