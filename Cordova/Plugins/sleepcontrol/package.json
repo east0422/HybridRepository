@@ -1,6 +1,7 @@
 {
   "name": "sleepcontrol",
   "version": "0.0.1",
+  "types": "./types/index.d.ts",
   "description": "Set the screen can sleep or not",
   "cordova": {
     "id": "byakugan-plugin-sleepcontrol",

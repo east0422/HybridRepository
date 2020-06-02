@@ -1,6 +1,7 @@
 {
   "name": "autobrightness",
   "version": "0.0.1",
+  "types": "./types/index.d.ts",
   "description": "Set brightness and reset when switch to background",
   "cordova": {
     "id": "byakugan-plugin-autobrightness",

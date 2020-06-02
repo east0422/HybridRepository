@@ -1,6 +1,7 @@
 {
   "name": "baidutts",
   "version": "0.0.1",
+  "types": "./types/index.d.ts",
   "description": "Speaking text by baidu sdk",
   "cordova": {
     "id": "byakugan-plugin-baidutts",

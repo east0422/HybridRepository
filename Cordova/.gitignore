@@ -5,7 +5,6 @@ node_modules
 /npm-debug.log
 /dist
 platforms
-plugins
 coverage/
 
 ## android and ios lib for baidutts, download from baidu and put in correct dir
