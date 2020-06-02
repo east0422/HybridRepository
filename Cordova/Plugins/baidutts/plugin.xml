@@ -43,6 +43,7 @@
   </platform>
 
   <platform name="android">
+    <dependency id="cordova-support-kotlin" version="1.1.0" />
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="BaiduTTS">
         <param name="android-package" value="com.luminagic.byakugan.baidutts.BaiduTTS" />
@@ -96,6 +97,5 @@
     <source-file src="android/libs/com.baidu.tts_2.3.0.jar" target-dir="app/libs" />
 
     <source-file src="android/BaiduTTS.kt" target-dir="app/src/main/java/com/luminagic/byakugan/baidutts" />
-    <hook type="after_plugin_install" src="scripts/applyKotlinAndroidPlugin.js" />
   </platform>
 </plugin>

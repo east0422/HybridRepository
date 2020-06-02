@@ -8,13 +8,13 @@
   </js-module>
 
   <platform name="android">
+    <dependency id="cordova-support-kotlin" version="1.1.0" />
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="Gyroscope">
         <param name="android-package" value="com.luminagic.byakugan.gyroscope.Gyroscope" />
       </feature>
     </config-file>
     <source-file src="android/Gyroscope.kt" target-dir="app/src/main/java/com/luminagic/byakugan/gyroscope" />
-    <hook type="after_plugin_install" src="scripts/applyKotlinAndroidPlugin.js" />
   </platform>
   <platform name="ios">
     <dependency id="cordova-plugin-add-swift-support" version="1.7.1"/>
